@@ -8,8 +8,12 @@ package controller;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -47,13 +51,25 @@ public class AppController implements MouseListener, MouseMotionListener, Action
     private void handleSolve(){
         // 1. check su start e end
         if (this.startNode == null || this.endNode == null) {
-            throw new Error("Start o End Null");
+            JOptionPane.showMessageDialog(view, "Errore: seleziona un nodo di partenza e uno di arrivo",
+             "Errore di input", JOptionPane.ERROR_MESSAGE);
         }
         // 2. cleanup algoritmo
         model.resetAlgorithmState();
 
         AStarSolver solver = new AStarSolver(this.model, this.startNode, this.endNode);
-        // 3. exec in background
+
+        // 3 ascoltatore al solver
+        solver.addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent event){
+                if("state".equals(event.getPropertyName()) && 
+                    SwingWorker.StateValue.DONE.equals((event.getNewValue()))){
+                        handleSolverDone();
+                    }
+            }
+        });
+        // 4. exec in background
         solver.execute();
     }
 
