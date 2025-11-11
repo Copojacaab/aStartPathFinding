@@ -4,6 +4,7 @@ import model.Grid;
 import model.NodeType;
 import view.MainFrame;
 import controller.AppController;
+import controller.ToolType;
 
 public class Main {
     
@@ -22,7 +23,7 @@ public class Main {
             // crea view
             MainFrame frame = new MainFrame();
             // crea il controller
-            AppController controller = new AppController(grid, frame);
+            AppController controller = new AppController(grid, frame, ToolType.DRAW_WALL);
             controller.initController();
 
             frame.getGridPanel().setGrid(grid);
