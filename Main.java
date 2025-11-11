@@ -18,6 +18,7 @@ public class Main {
 
             // -- TEST --
 
+
             // crea view
             MainFrame frame = new MainFrame();
             // crea il controller

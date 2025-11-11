@@ -41,10 +41,11 @@ public class AppController implements MouseListener, MouseMotionListener, Action
 
         // CONTROL PANEL
         view.getControlPanel().getResetBtn().addActionListener(this);
+        view.getControlPanel().getSolveBtn().addActionListener(this);
     }
 
     private void handleSolve(){
-
+        System.out.println("pippo");
     }
 
     private void handleReset(){
@@ -70,6 +71,8 @@ public class AppController implements MouseListener, MouseMotionListener, Action
         // 1. check reset o solve
         if (e.getSource() == view.getControlPanel().getResetBtn()) {
             handleReset();
+        }else if(e.getSource() == view.getControlPanel().getSolveBtn()){
+            handleSolve();
         }
     }
 
