@@ -3,6 +3,7 @@ import javax.swing.SwingUtilities;
 import model.Grid;
 import model.NodeType;
 import view.MainFrame;
+import controller.AppController;
 
 public class Main {
     
@@ -24,10 +25,11 @@ public class Main {
 
             // crea view
             MainFrame frame = new MainFrame();
+            // crea il controller
+            AppController controller = new AppController(grid, frame);
+            controller.initController();
 
-            // collega model e view
             frame.getGridPanel().setGrid(grid);
-
             frame.setVisible(true);
         });
     }

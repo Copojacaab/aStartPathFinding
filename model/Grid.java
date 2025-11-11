@@ -17,7 +17,7 @@ public class Grid {
         // init della griglia
         for(int y = 0; y < height; y++){
             for(int x = 0; x < width; x++){
-                nodes[y][x] = new Node(y, x);
+                nodes[y][x] = new Node(x, y);
             }
         }
     }
@@ -57,7 +57,7 @@ public class Grid {
     public void resetAlgorithmState(){
         for (int y = 0; y < height; y++){
             for(int x = 0; x < width; x++)
-                nodes[x][y].resetCosts();
+                nodes[y][x].resetCosts();
         }
     }
 

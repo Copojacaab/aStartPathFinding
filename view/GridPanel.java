@@ -85,4 +85,6 @@ public class GridPanel extends JPanel{
         }
     }
 
+    // getters and setters
+    public int getCellSize(){ return CELL_SIZE; }
 }
