@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 
 public class MainFrame extends JFrame{
     private GridPanel gridPanel;
+    private ControlPanel controlPanel;
 
     public MainFrame(){
         setTitle("A* PathFinding Visualizer");
@@ -22,8 +23,11 @@ public class MainFrame extends JFrame{
         setLayout(new BorderLayout());
 
         this.gridPanel = new GridPanel();
+        this.controlPanel = new ControlPanel();
         add(gridPanel, BorderLayout.CENTER);
+        add(controlPanel, BorderLayout.SOUTH);
     }
 
     public GridPanel getGridPanel() { return this.gridPanel; }
+    public ControlPanel getControlPanel() { return this.controlPanel; }
 }

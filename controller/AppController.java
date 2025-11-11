@@ -40,8 +40,7 @@ public class AppController implements MouseListener, MouseMotionListener, Action
         view.getGridPanel().addMouseListener(this);
 
         // CONTROL PANEL
-        // view.getControlPanel().getSolveButton().addActionListener(this);
-        // view.getControlPanel().getResetButton().addActionListener(this);
+        view.getControlPanel().getResetBtn().addActionListener(this);
     }
 
     private void handleSolve(){
@@ -49,7 +48,17 @@ public class AppController implements MouseListener, MouseMotionListener, Action
     }
 
     private void handleReset(){
+        // reset di tutti i nodi
+        for(int y = 0; y < model.getHeight(); y++){
+            for(int x = 0; x < model.getWidth(); x++){
+                model.getNode(x, y).resetFull();
+            }
+        }
+        // reset campi del modello
+        this.startNode = null;
+        this.endNode = null;
 
+        view.getGridPanel().repaint();
     }
 
     private void handleGridMouse(MouseEvent e){
@@ -58,7 +67,10 @@ public class AppController implements MouseListener, MouseMotionListener, Action
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // 
+        // 1. check reset o solve
+        if (e.getSource() == view.getControlPanel().getResetBtn()) {
+            handleReset();
+        }
     }
 
     @Override
