@@ -17,11 +17,6 @@ public class Main {
             Grid grid = new Grid(largezza, altezza);
 
             // -- TEST --
-            grid.getNode(5,5).setType(NodeType.WALL);
-            grid.getNode(5,6).setType(NodeType.WALL);
-            grid.getNode(5, 7).setType(NodeType.WALL);
-            grid.getNode(10,10).setType(NodeType.START);
-            grid.getNode(15,15).setType(NodeType.END);
 
             // crea view
             MainFrame frame = new MainFrame();

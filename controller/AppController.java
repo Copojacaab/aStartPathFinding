@@ -8,6 +8,9 @@ package controller;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+
+import javax.swing.SwingUtilities;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -20,6 +23,9 @@ public class AppController implements MouseListener, MouseMotionListener, Action
     
     Grid model;
     MainFrame view;
+
+    private Node startNode;
+    private Node endNode;
     
     public AppController(Grid model, MainFrame view){
         this.model = model;
@@ -76,8 +82,6 @@ public class AppController implements MouseListener, MouseMotionListener, Action
                 view.getGridPanel().repaint();
             }
         }
-        // 5. aggiorno la view
-        view.getGridPanel().repaint();
     }
 
     @Override
@@ -87,7 +91,45 @@ public class AppController implements MouseListener, MouseMotionListener, Action
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        
+        // 1. trovo la cella
+        int xCoord = e.getX();
+        int yCoord = e.getY();
+
+        int cellSize = view.getGridPanel().getCellSize();
+        int cellX = xCoord / cellSize;
+        int cellY = yCoord / cellSize;
+        // 2. check bordi
+        int gridHeight = model.getHeight();
+        int gridWidth = model.getWidth();
+        if (cellX >= 0 && cellX < gridWidth && cellY >= 0 && cellY < gridHeight) {
+            // check muro
+            Node node = model.getNode(cellX, cellY);
+
+            if(node != null && node.getType() != NodeType.WALL){
+                // 3. distinguo tasto destro e sinistro
+                if(SwingUtilities.isLeftMouseButton(e)){
+                    if(this.startNode != null){
+                        startNode.setType(NodeType.EMPTY); //prima pulisco il vecchio start
+                        node.setType(NodeType.START);
+                        this.startNode = node;
+                    } else if(this.startNode == null){
+                        node.setType(NodeType.START);
+                        this.startNode = node;
+                    }
+                } else if(SwingUtilities.isRightMouseButton(e)){
+                    if (this.endNode != null) {
+                        endNode.setType(NodeType.EMPTY);
+                        node.setType(NodeType.END);
+                        this.endNode = node;
+                    }else if(this.endNode == null){
+                        node.setType(NodeType.END);
+                        this.endNode = node;
+                    }
+                }
+            }
+        }
+
+        view.getGridPanel().repaint();
     }
 
     @Override
