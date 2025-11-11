@@ -18,6 +18,9 @@ import javax.swing.SwingWorker;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
 import model.Grid;
 import model.Node;
 import model.NodeType;
@@ -65,7 +68,7 @@ public class AppController implements MouseListener, MouseMotionListener, Action
             public void propertyChange(PropertyChangeEvent event){
                 if("state".equals(event.getPropertyName()) && 
                     SwingWorker.StateValue.DONE.equals((event.getNewValue()))){
-                        handleSolverDone();
+                        handleSolverDone(solver);
                     }
             }
         });
@@ -73,6 +76,38 @@ public class AppController implements MouseListener, MouseMotionListener, Action
         solver.execute();
     }
 
+    /**recupera il risultato e aggiorna il modello */
+    private void handleSolverDone(AStarSolver solver){
+        // 1. prendo il risultato
+        List<Node> path;
+        try {
+            path = solver.get();
+
+            // 2. check
+            if(path != null && !path.isEmpty()){
+                // aggiorno modello
+                System.out.println("Percorso trovato. Lunghezza: " + path.size());
+                
+                for(Node node: path){
+                    // coloro solo path
+                    if(node.getType() != NodeType.START && node.getType() != NodeType.END){
+                        node.setType(NodeType.PATH);
+                    }
+                }
+            } else {
+                // fallimento
+                System.out.println("Percorso non trovato");
+                JOptionPane.showMessageDialog(view, "Nessun percorso trovato",
+                 "Warning message", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(view, "Errore nell'esecuzione di astar",
+             "Errore solver", JOptionPane.ERROR_MESSAGE);
+        } finally{
+            view.getGridPanel().repaint();
+        }
+    }
     private void handleReset(){
         // reset di tutti i nodi
         for(int y = 0; y < model.getHeight(); y++){

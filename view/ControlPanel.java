@@ -6,12 +6,15 @@ public class ControlPanel extends JPanel{
     
     private JButton resetBtn;
     private JButton solveBtn;
+    private JButton eraseBtn;
 
     public ControlPanel(){
         this.resetBtn = new JButton("Reset");
         this.solveBtn = new JButton("Solve");
+        this.eraseBtn = new JButton("Erase");
         this.add(resetBtn);
         this.add(solveBtn);
+        this.add(eraseBtn);
     }
 
     // getter

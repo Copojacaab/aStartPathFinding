@@ -48,7 +48,7 @@ public class AStarSolver extends SwingWorker<List<Node>, Void>{
             // check
             if (currentNode == endNode) {
                 // backtracing
-                reconstructPath(endNode);
+                return reconstructPath(endNode);
             }
             // check dei neighbor
             for (Node neighbor : grid.getNeighbors(currentNode)) {
@@ -68,10 +68,6 @@ public class AStarSolver extends SwingWorker<List<Node>, Void>{
             }
         }
         return null; //non esiste percorso
-    }
-
-    public void done(){
-        
     }
     
     // ---------------- HELPER -------------
