@@ -16,8 +16,8 @@ public class GridPanel extends JPanel{
 
     /** metodo per collegare il model alla view */
     public void setGrid(Grid grid){
-        this.grid = grid;
         repaint(); 
+        this.grid = grid;
     }
 
     @Override

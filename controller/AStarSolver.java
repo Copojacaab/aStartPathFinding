@@ -11,7 +11,7 @@ public class AStarSolver extends SwingWorker{
     Grid grid;
     Node startNode;
     Node endNode;
-
+    
     public AStarSolver(Grid grid, Node start, Node end){
         this.grid = grid;
         this.startNode = start;

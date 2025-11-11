@@ -45,7 +45,16 @@ public class AppController implements MouseListener, MouseMotionListener, Action
     }
 
     private void handleSolve(){
-        System.out.println("pippo");
+        // 1. check su start e end
+        if (this.startNode == null || this.endNode == null) {
+            throw new Error("Start o End Null");
+        }
+        // 2. cleanup algoritmo
+        model.resetAlgorithmState();
+
+        AStarSolver solver = new AStarSolver(this.model, this.startNode, this.endNode);
+        // 3. exec in background
+        solver.execute();
     }
 
     private void handleReset(){
