@@ -55,8 +55,6 @@ public class AppController implements MouseListener, MouseMotionListener, Action
         view.getControlPanel().getWallBtn().addActionListener(this);
         view.getControlPanel().getPointsBtn().addActionListener(this);
         view.getControlPanel().getEraseBtn().addActionListener(this);
-        // heuristic
-        view.getControlPanel().getHeuristicBtn().addActionListener(this);
         // random maze
         view.getControlPanel().getRandMaze().addActionListener(this);
     }
@@ -143,17 +141,6 @@ public class AppController implements MouseListener, MouseMotionListener, Action
         }
         view.getGridPanel().repaint();
     }
-    private void handleHeuristicWeightSet() {
-        try {
-            Double heuWeight = Double.parseDouble(view.getControlPanel().getHeuristicWeight().getText());
-            handleSolve(heuWeight);
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(view,
-                    "Inserisci un numero valido",
-                    "Errore",
-                    JOptionPane.ERROR_MESSAGE);
-        }
-    }
 
     // funzione per generare il labirinto casuale
     private void handleRandomMaze(){
@@ -183,15 +170,15 @@ public class AppController implements MouseListener, MouseMotionListener, Action
         } else if(e.getSource() == view.getControlPanel().getClearPathBtn()){
             handleClearPath();
         } else if (e.getSource() == view.getControlPanel().getSolveBtn()) { // solve
-            handleSolve(1.0);
+            // recupero il valore dello slider
+            int sliderVal = view.getControlPanel().getHeuristicSlider().getValue();
+            handleSolve(sliderVal/10.0);
         } else if (e.getSource() == view.getControlPanel().getWallBtn()) {
             this.currentTool = ToolType.DRAW_WALL;
         } else if (e.getSource() == view.getControlPanel().getPointsBtn()) {
             this.currentTool = ToolType.SET_POINTS;
         } else if (e.getSource() == view.getControlPanel().getEraseBtn()) {
             this.currentTool = ToolType.ERASER;
-        } else if (e.getSource() == view.getControlPanel().getHeuristicBtn()) {
-            handleHeuristicWeightSet();
         } else if (e.getSource() == view.getControlPanel().getRandMaze()){
             handleRandomMaze();
         }

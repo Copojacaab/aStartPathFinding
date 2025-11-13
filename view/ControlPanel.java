@@ -3,7 +3,7 @@ package view;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.JSlider;
 import javax.swing.JToggleButton;
 public class ControlPanel extends JPanel{
     
@@ -15,8 +15,7 @@ public class ControlPanel extends JPanel{
     private JToggleButton pointsBtn;
     private JToggleButton wallBtn;
 
-    private JTextField heuristicWeight;
-    private JButton sendHeuristicbtn;
+    private JSlider heuristicSlider;
 
     private JButton randMazeBtn;
 
@@ -29,11 +28,14 @@ public class ControlPanel extends JPanel{
         this.pointsBtn = new JToggleButton("Start/End");
         this.wallBtn = new JToggleButton("Walls");
 
-        this.heuristicWeight = new JTextField("Inserire placeholder");
-        this.sendHeuristicbtn = new JButton("Send");
+        this.heuristicSlider = new JSlider(10,100,10);
 
         this.randMazeBtn = new JButton("Random Maze");
 
+        // da mettere in helper
+        heuristicSlider.setMajorTickSpacing(10);
+        heuristicSlider.setPaintTicks(true);
+        heuristicSlider.setPaintLabels(true);
         // raggruppo in ButtonGroup per sicurezza unicita attivazione
         ButtonGroup toolGroup = new ButtonGroup();
         toolGroup.add(wallBtn);
@@ -48,9 +50,8 @@ public class ControlPanel extends JPanel{
         this.add(pointsBtn);
         this.add(eraseBtn);
 
-        this.add(heuristicWeight);
-        this.add(sendHeuristicbtn);
-
+        this.add(heuristicSlider);
+        
         this.add(randMazeBtn);
     }
 
@@ -61,7 +62,6 @@ public class ControlPanel extends JPanel{
     public JToggleButton getEraseBtn() { return this.eraseBtn; }
     public JToggleButton getPointsBtn() { return this.pointsBtn; }
     public JToggleButton getWallBtn() { return this.wallBtn; }
-    public JTextField getHeuristicWeight() { return this.heuristicWeight; }
-    public JButton getHeuristicBtn() { return this.sendHeuristicbtn; }
     public JButton getRandMaze() { return this.randMazeBtn; }
+    public JSlider getHeuristicSlider() { return heuristicSlider; }
 }
