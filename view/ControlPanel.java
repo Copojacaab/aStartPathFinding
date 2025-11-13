@@ -17,6 +17,8 @@ public class ControlPanel extends JPanel{
     private JTextField heuristicWeight;
     private JButton sendHeuristicbtn;
 
+    private JButton randMazeBtn;
+
     public ControlPanel(){
         this.resetBtn = new JButton("Reset");
         this.solveBtn = new JButton("Solve");
@@ -26,7 +28,9 @@ public class ControlPanel extends JPanel{
         this.wallBtn = new JToggleButton("Walls");
 
         this.heuristicWeight = new JTextField("Inserire placeholder");
-        sendHeuristicbtn = new JButton("Send");
+        this.sendHeuristicbtn = new JButton("Send");
+
+        this.randMazeBtn = new JButton("Random Maze");
 
         // raggruppo in ButtonGroup per sicurezza unicita attivazione
         ButtonGroup toolGroup = new ButtonGroup();
@@ -43,6 +47,8 @@ public class ControlPanel extends JPanel{
 
         this.add(heuristicWeight);
         this.add(sendHeuristicbtn);
+
+        this.add(randMazeBtn);
     }
 
     // getter
@@ -53,4 +59,5 @@ public class ControlPanel extends JPanel{
     public JToggleButton getWallBtn() { return this.wallBtn; }
     public JTextField getHeuristicWeight() { return this.heuristicWeight; }
     public JButton getHeuristicBtn() { return this.sendHeuristicbtn; }
+    public JButton getRandMaze() { return this.randMazeBtn; }
 }

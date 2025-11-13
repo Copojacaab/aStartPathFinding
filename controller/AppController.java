@@ -57,6 +57,8 @@ public class AppController implements MouseListener, MouseMotionListener, Action
         view.getControlPanel().getEraseBtn().addActionListener(this);
         // heuristic
         view.getControlPanel().getHeuristicBtn().addActionListener(this);
+        // random maze
+        view.getControlPanel().getRandMaze().addActionListener(this);
     }
 
     private void handleSolve(Double heuristicWeight) {
@@ -139,6 +141,26 @@ public class AppController implements MouseListener, MouseMotionListener, Action
         }
     }
 
+    // funzione per generare il labirinto casuale
+    private void handleRandomMaze(){
+        // cleanup totale
+        model.resetAllNodes();
+
+        // visito ogni nodo
+        for(int y=0; y<model.getHeight(); y++){
+            for(int x=0; x<model.getWidth(); x++){
+                Double randomNum = Math.random();
+                Node node = model.getNode(x, y);
+                // se minore di 0.3 wall, altrimenti empty
+                if (randomNum < 0.3) {
+                    if(node.getType() != NodeType.START && node.getType() != NodeType.END)
+                        model.getNode(x,y).setType(NodeType.WALL);
+                }
+            }
+        }
+        view.getGridPanel().repaint();
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         // 1. check reset o solve
@@ -154,6 +176,8 @@ public class AppController implements MouseListener, MouseMotionListener, Action
             this.currentTool = ToolType.ERASER;
         } else if (e.getSource() == view.getControlPanel().getHeuristicBtn()) {
             handleHeuristicWeightSet();
+        } else if (e.getSource() == view.getControlPanel().getRandMaze()){
+            handleRandomMaze();
         }
     }
 
