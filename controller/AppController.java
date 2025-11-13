@@ -49,6 +49,7 @@ public class AppController implements MouseListener, MouseMotionListener, Action
         view.getGridPanel().addMouseListener(this);
         // CONTROL PANEL
         view.getControlPanel().getResetBtn().addActionListener(this);
+        view.getControlPanel().getClearPathBtn().addActionListener(this);
         view.getControlPanel().getSolveBtn().addActionListener(this);
         // tools
         view.getControlPanel().getWallBtn().addActionListener(this);
@@ -128,6 +129,20 @@ public class AppController implements MouseListener, MouseMotionListener, Action
         view.getGridPanel().repaint();
     }
 
+    private void handleClearPath(){
+        Node node;
+        model.resetAlgorithmState();
+        // cancello solamente i nodi path, open e closed
+        for(int y=0; y<model.getHeight(); y++){
+            for(int x=0; x<model.getWidth(); x++){
+                node = model.getNode(x, y);
+                if (node.getType() == NodeType.PATH || node.getType() == NodeType.OPEN || node.getType() == NodeType.CLOSED) {
+                    node.setType(NodeType.EMPTY);
+                }
+            }
+        }
+        view.getGridPanel().repaint();
+    }
     private void handleHeuristicWeightSet() {
         try {
             Double heuWeight = Double.parseDouble(view.getControlPanel().getHeuristicWeight().getText());
@@ -165,6 +180,8 @@ public class AppController implements MouseListener, MouseMotionListener, Action
         // 1. check reset o solve
         if (e.getSource() == view.getControlPanel().getResetBtn()) { // reset
             handleReset();
+        } else if(e.getSource() == view.getControlPanel().getClearPathBtn()){
+            handleClearPath();
         } else if (e.getSource() == view.getControlPanel().getSolveBtn()) { // solve
             handleSolve(1.0);
         } else if (e.getSource() == view.getControlPanel().getWallBtn()) {
