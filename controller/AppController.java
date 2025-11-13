@@ -80,6 +80,8 @@ public class AppController implements MouseListener, MouseMotionListener, Action
                 }
             }
         });
+        // aggiorno la view
+        view.getGridPanel().repaint();
         // 4. exec in background
         solver.execute();
     }
@@ -132,9 +134,16 @@ public class AppController implements MouseListener, MouseMotionListener, Action
     }
 
     private void handleHeuristicWeightSet(){
-        Double heuWeight = Double.parseDouble(view.getControlPanel().
+        try{        
+            Double heuWeight = Double.parseDouble(view.getControlPanel().
                                                     getHeuristicWeight().getText());
-        handleSolve(heuWeight);
+            handleSolve(heuWeight);
+        } catch(NumberFormatException ex){
+            JOptionPane.showMessageDialog(view, 
+                "Inserisci un numero valido", 
+                "Errore", 
+                JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     @Override

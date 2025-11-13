@@ -78,7 +78,7 @@ public class AStarSolver extends SwingWorker<List<Node>, Node>{
                     neighbor.setFCost(neighbor.getGCost() + neighbor.getHCost());
                     openList.add(neighbor); //buono, aggiungo alla open
                     // change dello status per visualizer
-                    if(currentNode.getType() != NodeType.START && currentNode.getType() != NodeType.END){
+                    if(neighbor.getType() == NodeType.EMPTY){
                         neighbor.setType(NodeType.OPEN);
                         publish(neighbor); //attivo process
                     }
