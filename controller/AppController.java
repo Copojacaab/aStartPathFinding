@@ -47,7 +47,6 @@ public class AppController implements MouseListener, MouseMotionListener, Action
         // GRID PANEL
         view.getGridPanel().addMouseMotionListener(this);
         view.getGridPanel().addMouseListener(this);
-
         // CONTROL PANEL
         view.getControlPanel().getResetBtn().addActionListener(this);
         view.getControlPanel().getSolveBtn().addActionListener(this);
