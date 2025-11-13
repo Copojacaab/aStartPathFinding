@@ -55,9 +55,11 @@ public class AppController implements MouseListener, MouseMotionListener, Action
         view.getControlPanel().getWallBtn().addActionListener(this);
         view.getControlPanel().getPointsBtn().addActionListener(this);
         view.getControlPanel().getEraseBtn().addActionListener(this);
+        // heuristic
+        view.getControlPanel().getHeuristicBtn().addActionListener(this);
     }
 
-    private void handleSolve() {
+    private void handleSolve(Double heuristicWeight) {
         // 1. check su start e end
         if (this.startNode == null || this.endNode == null) {
             JOptionPane.showMessageDialog(view, "Errore: seleziona un nodo di partenza e uno di arrivo",
@@ -66,7 +68,7 @@ public class AppController implements MouseListener, MouseMotionListener, Action
         // 2. cleanup algoritmo
         model.resetAlgorithmState();
 
-        AStarSolver solver = new AStarSolver(this.model, this.startNode, this.endNode);
+        AStarSolver solver = new AStarSolver(this.model, this.startNode, this.endNode, this.view.getGridPanel(), heuristicWeight);
 
         // 3 ascoltatore al solver
         solver.addPropertyChangeListener(new PropertyChangeListener() {
@@ -129,8 +131,10 @@ public class AppController implements MouseListener, MouseMotionListener, Action
         view.getGridPanel().repaint();
     }
 
-    private void handleGridMouse(MouseEvent e) {
-
+    private void handleHeuristicWeightSet(){
+        Double heuWeight = Double.parseDouble(view.getControlPanel().
+                                                    getHeuristicWeight().getText());
+        handleSolve(heuWeight);
     }
 
     @Override
@@ -139,13 +143,15 @@ public class AppController implements MouseListener, MouseMotionListener, Action
         if (e.getSource() == view.getControlPanel().getResetBtn()) { // reset
             handleReset();
         } else if (e.getSource() == view.getControlPanel().getSolveBtn()) { // solve
-            handleSolve();
+            handleSolve(1.0);
         } else if (e.getSource() == view.getControlPanel().getWallBtn()) {
             this.currentTool = ToolType.DRAW_WALL;
         } else if (e.getSource() == view.getControlPanel().getPointsBtn()) {
             this.currentTool = ToolType.SET_POINTS;
         } else if (e.getSource() == view.getControlPanel().getEraseBtn()) {
             this.currentTool = ToolType.ERASER;
+        } else if (e.getSource() == view.getControlPanel().getHeuristicBtn()){
+            handleHeuristicWeightSet();
         }
     }
 

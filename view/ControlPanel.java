@@ -3,6 +3,7 @@ package view;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 public class ControlPanel extends JPanel{
     
@@ -13,6 +14,9 @@ public class ControlPanel extends JPanel{
     private JToggleButton pointsBtn;
     private JToggleButton wallBtn;
 
+    private JTextField heuristicWeight;
+    private JButton sendHeuristicbtn;
+
     public ControlPanel(){
         this.resetBtn = new JButton("Reset");
         this.solveBtn = new JButton("Solve");
@@ -20,6 +24,9 @@ public class ControlPanel extends JPanel{
         this.eraseBtn = new JToggleButton("Erase");
         this.pointsBtn = new JToggleButton("Start/End");
         this.wallBtn = new JToggleButton("Walls");
+
+        this.heuristicWeight = new JTextField("Inserire placeholder");
+        sendHeuristicbtn = new JButton("Send");
 
         // raggruppo in ButtonGroup per sicurezza unicita attivazione
         ButtonGroup toolGroup = new ButtonGroup();
@@ -33,6 +40,9 @@ public class ControlPanel extends JPanel{
         this.add(wallBtn);
         this.add(pointsBtn);
         this.add(eraseBtn);
+
+        this.add(heuristicWeight);
+        this.add(sendHeuristicbtn);
     }
 
     // getter
@@ -41,4 +51,6 @@ public class ControlPanel extends JPanel{
     public JToggleButton getEraseBtn() { return this.eraseBtn; }
     public JToggleButton getPointsBtn() { return this.pointsBtn; }
     public JToggleButton getWallBtn() { return this.wallBtn; }
+    public JTextField getHeuristicWeight() { return this.heuristicWeight; }
+    public JButton getHeuristicBtn() { return this.sendHeuristicbtn; }
 }

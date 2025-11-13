@@ -1,7 +1,7 @@
 import javax.swing.SwingUtilities;
 
 import model.Grid;
-import model.NodeType;
+
 import view.MainFrame;
 import controller.AppController;
 import controller.ToolType;

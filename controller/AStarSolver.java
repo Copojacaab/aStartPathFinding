@@ -7,24 +7,30 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 import model.*;
+import view.GridPanel;
 import javax.swing.SwingWorker;
 
 import model.Grid;
 // ritorna una List<Node>, non pubblica niente a run time
-public class AStarSolver extends SwingWorker<List<Node>, Void>{
+public class AStarSolver extends SwingWorker<List<Node>, Node>{
     
     Grid grid;
     Node startNode;
     Node endNode;
-    
+    // visualizer a runtime
+    GridPanel gridPanel;
+    Double heuristicWeight;
+
     // Stack per aStar
     private PriorityQueue<Node> openList;
     private HashSet<Node> closedList;
 
-    public AStarSolver(Grid grid, Node start, Node end){
+    public AStarSolver(Grid grid, Node start, Node end, GridPanel gridPanel, Double heuristicWeight){
         this.grid = grid;
         this.startNode = start;
         this.endNode = end;
+        this.gridPanel = gridPanel;
+        this.heuristicWeight =heuristicWeight;
     }
 
     @Override
@@ -36,22 +42,29 @@ public class AStarSolver extends SwingWorker<List<Node>, Void>{
         closedList = new HashSet<>();
         // 2. init dello start (costi)
         startNode.setGCost(0);
-        startNode.setHCost(calcHeuristic(startNode, endNode));
+        startNode.setHCost(calcHeuristic(startNode, endNode, this.heuristicWeight));
         startNode.setFCost(startNode.getHCost());
         
         openList.add(startNode); // aggiungo il primo nodo
 
         // 3. ciclo principale (estraggo finche non trovo end o finisce la open)
         while (!openList.isEmpty()) {
+            Thread.sleep(10);
             Node currentNode = openList.poll(); //estraggo il best
-            closedList.add(currentNode);
-            // check
+            closedList.add(currentNode); //chiuso
+            //change dello status a closed
+            if(currentNode.getType() != NodeType.START && currentNode.getType() != NodeType.END){
+                currentNode.setType(NodeType.CLOSED);
+                publish(currentNode); //attivo process
+            }
+                // check
             if (currentNode == endNode) {
                 // backtracing
                 return reconstructPath(endNode);
             }
             // check dei neighbor
             for (Node neighbor : grid.getNeighbors(currentNode)) {
+                Thread.sleep(5);
                 // salto se gia' visto
                 if (closedList.contains(neighbor)) {
                     continue;
@@ -61,20 +74,39 @@ public class AStarSolver extends SwingWorker<List<Node>, Void>{
                 if (tentativeGCost < neighbor.getGCost()) { // se si, trovato percorso migliore
                     neighbor.setParentNode(currentNode); //costi
                     neighbor.setGCost(tentativeGCost);
-                    neighbor.setHCost(calcHeuristic(neighbor, endNode));
+                    neighbor.setHCost(calcHeuristic(neighbor, endNode, this.heuristicWeight));
                     neighbor.setFCost(neighbor.getGCost() + neighbor.getHCost());
                     openList.add(neighbor); //buono, aggiungo alla open
+                    // change dello status per visualizer
+                    if(currentNode.getType() != NodeType.START && currentNode.getType() != NodeType.END){
+                        neighbor.setType(NodeType.OPEN);
+                        publish(neighbor); //attivo process
+                    }
                 }
             }
         }
         return null; //non esiste percorso
     }
+
+    /**
+     * ordina il repaint al gridpanel
+     */
+    @Override
+    protected void process(List<Node> chunks){
+        /**
+         * for(Node n : chunks){
+         *  gridPanel.repaint()
+         * }
+         */
+        // so che il Model e' aggiornato (condiviso)
+        this.gridPanel.repaint();
+    }
     
     // ---------------- HELPER -------------
     // distanza di manhattan
-    private double calcHeuristic(Node from, Node to){
+    private double calcHeuristic(Node from, Node to, Double heuristicWeight){
         return (Math.abs(to.getX() - from.getX()) + 
-                Math.abs(to.getY() - from.getY()));
+                Math.abs(to.getY() - from.getY())) * heuristicWeight;
     }
 
     // backtracing del percorso finale
