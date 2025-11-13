@@ -49,7 +49,7 @@ public class AStarSolver extends SwingWorker<List<Node>, Node>{
 
         // 3. ciclo principale (estraggo finche non trovo end o finisce la open)
         while (!openList.isEmpty()) {
-            Thread.sleep(10);
+            sleep(10);
             Node currentNode = openList.poll(); //estraggo il best
             closedList.add(currentNode); //chiuso
             //change dello status a closed
@@ -64,7 +64,7 @@ public class AStarSolver extends SwingWorker<List<Node>, Node>{
             }
             // check dei neighbor
             for (Node neighbor : grid.getNeighbors(currentNode)) {
-                Thread.sleep(5);
+                sleep(5);
                 // salto se gia' visto
                 if (closedList.contains(neighbor)) {
                     continue;
@@ -76,7 +76,8 @@ public class AStarSolver extends SwingWorker<List<Node>, Node>{
                     neighbor.setGCost(tentativeGCost);
                     neighbor.setHCost(calcHeuristic(neighbor, endNode, this.heuristicWeight));
                     neighbor.setFCost(neighbor.getGCost() + neighbor.getHCost());
-                    openList.add(neighbor); //buono, aggiungo alla open
+                    if(!openList.contains(neighbor))
+                        openList.add(neighbor); //buono, aggiungo alla open
                     // change dello status per visualizer
                     if(neighbor.getType() == NodeType.EMPTY){
                         neighbor.setType(NodeType.OPEN);
@@ -121,5 +122,13 @@ public class AStarSolver extends SwingWorker<List<Node>, Node>{
         // inverto la lista
         Collections.reverse(path);
         return path;
+    }
+
+    private void sleep(int ms){
+        try{
+            Thread.sleep(ms);
+        } catch (InterruptedException ex){
+            Thread.currentThread().interrupt();
+        }
     }
 }

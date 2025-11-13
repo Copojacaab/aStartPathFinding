@@ -68,7 +68,8 @@ public class AppController implements MouseListener, MouseMotionListener, Action
         // 2. cleanup algoritmo
         model.resetAlgorithmState();
 
-        AStarSolver solver = new AStarSolver(this.model, this.startNode, this.endNode, this.view.getGridPanel(), heuristicWeight);
+        AStarSolver solver = new AStarSolver(this.model, this.startNode, this.endNode, this.view.getGridPanel(),
+                heuristicWeight);
 
         // 3 ascoltatore al solver
         solver.addPropertyChangeListener(new PropertyChangeListener() {
@@ -120,29 +121,21 @@ public class AppController implements MouseListener, MouseMotionListener, Action
     }
 
     private void handleReset() {
-        // reset di tutti i nodi
-        for (int y = 0; y < model.getHeight(); y++) {
-            for (int x = 0; x < model.getWidth(); x++) {
-                model.getNode(x, y).resetFull();
-            }
-        }
-        // reset campi del modello
+        model.resetAllNodes(); //reset di tutti i nodi
         this.startNode = null;
         this.endNode = null;
-
         view.getGridPanel().repaint();
     }
 
-    private void handleHeuristicWeightSet(){
-        try{        
-            Double heuWeight = Double.parseDouble(view.getControlPanel().
-                                                    getHeuristicWeight().getText());
+    private void handleHeuristicWeightSet() {
+        try {
+            Double heuWeight = Double.parseDouble(view.getControlPanel().getHeuristicWeight().getText());
             handleSolve(heuWeight);
-        } catch(NumberFormatException ex){
-            JOptionPane.showMessageDialog(view, 
-                "Inserisci un numero valido", 
-                "Errore", 
-                JOptionPane.ERROR_MESSAGE);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(view,
+                    "Inserisci un numero valido",
+                    "Errore",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -159,114 +152,95 @@ public class AppController implements MouseListener, MouseMotionListener, Action
             this.currentTool = ToolType.SET_POINTS;
         } else if (e.getSource() == view.getControlPanel().getEraseBtn()) {
             this.currentTool = ToolType.ERASER;
-        } else if (e.getSource() == view.getControlPanel().getHeuristicBtn()){
+        } else if (e.getSource() == view.getControlPanel().getHeuristicBtn()) {
             handleHeuristicWeightSet();
         }
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        // 1. prendo px dall'event
-        int xCoord = e.getX();
-        int yCoord = e.getY();
-        // 2. calcolo la cella
-        int cellSize = view.getGridPanel().getCellSize();
-        int cellX = xCoord / cellSize;
-        int cellY = yCoord / cellSize;
-        // 3. check bordi
-        int gridWidth = model.getWidth();
-        int gridHeight = model.getHeight();
-        if (cellX >= 0 && cellX < gridWidth && cellY >= 0 && cellY < gridHeight) {
-            // 4. aggiorno lo stato del node
-            Node node = model.getNode(cellX, cellY);
+        Node node = getNodeFromMouseEvent(e);
 
-            if (node != null && node.getType() != NodeType.START
-                    && node.getType() != NodeType.END) {
-                // check del tipo
-                if (currentTool == ToolType.DRAW_WALL) {
-                    node.setType(NodeType.WALL);
-                } else if (currentTool == ToolType.ERASER) {
-                    node.setType(NodeType.EMPTY);
-                }
-            }
+        if (node == null || node.getType() == NodeType.START || node.getType() == NodeType.END) {
+            return;
         }
+        if (currentTool == ToolType.DRAW_WALL) {
+            node.setType(NodeType.WALL);
+        } else if (currentTool == ToolType.ERASER) {
+            node.setType(NodeType.EMPTY);
+        }
+            
         view.getGridPanel().repaint();
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
 
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        // 1. prendo px dall'event
-        int xCoord = e.getX();
-        int yCoord = e.getY();
-        // 2. calcolo la cella
-        int cellSize = view.getGridPanel().getCellSize();
-        int cellX = xCoord / cellSize;
-        int cellY = yCoord / cellSize;
-        // 3. check bordi
-        int gridWidth = model.getWidth();
-        int gridHeight = model.getHeight();
-        if (cellX >= 0 && cellX < gridWidth && cellY >= 0 && cellY < gridHeight) {
-            // 4. aggiorno lo stato del node
-            Node node = model.getNode(cellX, cellY);
+        Node node = getNodeFromMouseEvent(e);
 
-            if (node != null && node.getType() != NodeType.START
-                    && node.getType() != NodeType.END) {
-                // check del tipo
-                if (currentTool == ToolType.SET_POINTS) {
-                    placeStartOrEnd(e, node);
-                } else if (currentTool == ToolType.ERASER) {
-                    node.setType(NodeType.EMPTY);
-                }
-            }
+        // Se è null (fuori bordi) o non valido, esci
+        if (node == null || node.getType() == NodeType.START || node.getType() == NodeType.END) {
+            return;
+        }
+
+        if (currentTool == ToolType.SET_POINTS) {
+            placeStartOrEnd(e, node);
+        } else if (currentTool == ToolType.ERASER) {
+            node.setType(NodeType.EMPTY);
         }
         view.getGridPanel().repaint();
     }
 
     private void placeStartOrEnd(MouseEvent e, Node node) {
         if (SwingUtilities.isLeftMouseButton(e)) {
-            if (this.startNode != null) {
-                startNode.setType(NodeType.EMPTY); // prima pulisco il vecchio start
-                node.setType(NodeType.START);
-                this.startNode = node;
-            } else if (this.startNode == null) {
-                node.setType(NodeType.START);
-                this.startNode = node;
-            }
-        } else if (SwingUtilities.isRightMouseButton(e)) {
-            if (this.endNode != null) {
-                endNode.setType(NodeType.EMPTY);
-                node.setType(NodeType.END);
-                this.endNode = node;
-            } else if (this.endNode == null) {
+                // Gestione Start
+                if (this.startNode != null) {
+                    this.startNode.setType(NodeType.EMPTY); // Pulisci vecchio
+                }
+                node.setType(NodeType.START); // Setta nuovo
+                this.startNode = node;        // Aggiorna riferimento
+                
+            } else if (SwingUtilities.isRightMouseButton(e)) {
+                // Gestione End
+                if (this.endNode != null) {
+                    this.endNode.setType(NodeType.EMPTY);
+                }
                 node.setType(NodeType.END);
                 this.endNode = node;
             }
+    }
+
+    // helper
+    private Node getNodeFromMouseEvent(MouseEvent e) {
+        int cellSize = view.getGridPanel().getCellSize();
+        int cellX = e.getX() / cellSize;
+        int cellY = e.getY() / cellSize;
+
+        // Check bordi delegato al Model (più pulito) o fatto qui
+        if (cellX >= 0 && cellX < model.getWidth() && cellY >= 0 && cellY < model.getHeight()) {
+            return model.getNode(cellX, cellY);
         }
+        return null;
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-
     }
 
 }

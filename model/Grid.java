@@ -61,6 +61,14 @@ public class Grid {
         }
     }
 
+    /*resetta tutto */
+    public void resetAllNodes() {
+        for(int y=0; y < height; y++){
+            for(int x = 0; x < width; x++){
+                nodes[y][x].resetFull();
+            }
+        }
+    }
     // Basic getters and setters
     public int getWidth() { return this.width; }
     public int getHeight() { return this.height; }
