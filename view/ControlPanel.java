@@ -72,6 +72,7 @@ public class ControlPanel extends JPanel{
 
         // aggiungo il wrapper al panel
         this.add(wrapperControl, BorderLayout.NORTH);
+        this.setPreferredSize(new java.awt.Dimension(200, 0));
     }
 
     // getter

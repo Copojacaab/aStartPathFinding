@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
@@ -15,7 +16,8 @@ public class MainFrame extends JFrame{
         initLayout();
 
         setSize(800, 600);
-        
+
+        this.setMinimumSize(new Dimension(640, 480));
         setLocationRelativeTo(null); //centra la finestra
     }
 
