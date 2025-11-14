@@ -116,4 +116,13 @@ public class Grid {
     public int getHeight() { return this.height; }
     public Node getStartNode() { return this.startNode; }
     public Node getEndNode() { return this.endNode; }
+    public NodeType genNodeType(int x, int y) {
+        Node node = getNode(x, y);
+
+        if(node != null){
+            return node.getType();
+        }
+
+        return null;
+    }
 }

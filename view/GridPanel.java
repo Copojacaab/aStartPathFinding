@@ -4,7 +4,7 @@ import model.*;
 
 import java.awt.Color;
 import java.awt.Graphics;
-
+import java.awt.Point;
 import javax.swing.JPanel;
 
 public class GridPanel extends JPanel{
@@ -33,8 +33,8 @@ public class GridPanel extends JPanel{
         // disegna ogni cella
         for(int y = 0; y < gridHeight; y++){
             for(int x = 0; x < gridWidth; x++){
-                Node node = grid.getNode(x, y);
-                Color cellColor = getColorForType(node.getType());
+                NodeType nodeType = grid.genNodeType(x, y);
+                Color cellColor = getColorForType(nodeType);
 
                 DynamicDimension dims = getDynamicDimension();
                 int cellSize = dims.getCellSize();
@@ -80,7 +80,7 @@ public class GridPanel extends JPanel{
      * Metodo per tradurre px del mouse in nodo della griglia
      * incapsulazione della griglia
      */
-    public Node getNodeAt(int mouseX, int mouseY){
+    public Point getNodeAt(int mouseX, int mouseY){
         if (grid == null) return null; //check
 
         // prendo le dimensioni dinamiche
@@ -93,7 +93,13 @@ public class GridPanel extends JPanel{
         int cellX = (mouseX - xOffset) / cellSize;
         int cellY = (mouseY - yOffset) / cellSize;
 
-        return grid.getNode(cellX, cellY);
+        int gridHeight = grid.getHeight();
+        int gridWidth = grid.getWidth();
+        if(cellX < 0 || cellX > gridWidth || cellY < 0 || cellY > gridHeight)
+            return null;
+        
+        Point dioporco = new Point(cellX, cellY);
+        return new Point(dioporco);
     }
 
     // -------------- HELPER ---------------
@@ -114,6 +120,10 @@ public class GridPanel extends JPanel{
 
         return new DynamicDimension(cellSize, xOffset, yOffset);
     }
+
+    /**
+     * ---------------------------- CLASSI PRIVATE ------------------------
+     */
     // Classe per restituire le dimensioni dinamiche delle celle e della griglia
     final class DynamicDimension{
         private final int cellSize;

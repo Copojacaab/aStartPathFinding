@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -162,7 +163,8 @@ public class AppController implements MouseListener, MouseMotionListener, Action
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        Node node = view.getGridPanel().getNodeAt(e.getX(), e.getY());
+        Point nodeCoord = view.getGridPanel().getNodeAt(e.getX(), e.getY());
+        Node node = model.getNode((int) nodeCoord.getX(), (int) nodeCoord.getY());
 
         if (node == null || node.getType() == NodeType.START || node.getType() == NodeType.END) {
             return;
@@ -179,7 +181,8 @@ public class AppController implements MouseListener, MouseMotionListener, Action
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        Node node = view.getGridPanel().getNodeAt(e.getX(), e.getY());
+        Point nodeCoord = view.getGridPanel().getNodeAt(e.getX(), e.getY());
+        Node node = model.getNode((int)nodeCoord.getX(),(int)nodeCoord.getY());
 
         // Se è null (fuori bordi) o non valido, esci
         if (node == null || node.getType() == NodeType.START || node.getType() == NodeType.END) {
