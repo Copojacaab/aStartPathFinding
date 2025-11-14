@@ -27,9 +27,8 @@ public class MainFrame extends JFrame{
 
         this.gridPanel = new GridPanel();
         this.controlPanel = new ControlPanel();
-
+        
         JSplitPane splitPane = new JSplitPane();
-
         splitPane.setLeftComponent(gridPanel);
         splitPane.setRightComponent(controlPanel);
 
@@ -38,6 +37,7 @@ public class MainFrame extends JFrame{
         
         this.add(splitPane, BorderLayout.CENTER);
     }
+
 
     public GridPanel getGridPanel() { return this.gridPanel; }
     public ControlPanel getControlPanel() { return this.controlPanel; }
