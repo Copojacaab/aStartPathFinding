@@ -47,24 +47,34 @@ public class AStarSolver extends SwingWorker<List<Node>, Node>{
         
         openList.add(startNode); // aggiungo il primo nodo
 
+        // Lista per il batchin
+        ArrayList<Node> batch = new ArrayList();
+        final int BATCH_SIZE = 10;
         // 3. ciclo principale (estraggo finche non trovo end o finisce la open)
         while (!openList.isEmpty()) {
-            sleep(10);
+            sleep(5);
             Node currentNode = openList.poll(); //estraggo il best
             closedList.add(currentNode); //chiuso
             //change dello status a closed
             if(currentNode.getType() != NodeType.START && currentNode.getType() != NodeType.END){
                 currentNode.setType(NodeType.CLOSED);
-                publish(currentNode); //attivo process
+                batch.add(currentNode);
+                if(batch.size() >= BATCH_SIZE){
+                    publish(batch.toArray(new Node[0]));
+                    batch = new ArrayList<>();
+                }
             }
                 // check
             if (currentNode == endNode) {
+                if (!batch.isEmpty()) {
+                    publish(batch.toArray(new Node[0]));
+                }
                 // backtracing
                 return reconstructPath(endNode);
             }
             // check dei neighbor
             for (Node neighbor : grid.getNeighbors(currentNode)) {
-                sleep(5);
+                sleep(2);
                 // salto se gia' visto
                 if (closedList.contains(neighbor)) {
                     continue;
@@ -81,10 +91,14 @@ public class AStarSolver extends SwingWorker<List<Node>, Node>{
                     // change dello status per visualizer
                     if(neighbor.getType() == NodeType.EMPTY){
                         neighbor.setType(NodeType.OPEN);
-                        publish(neighbor); //attivo process
+                        batch.add(neighbor); 
                     }
                 }
             }
+        }
+        // pubblico l'ultimo batch se non e' vuoto
+        if(!batch.isEmpty()){
+            publish(batch.toArray(new Node[0]));
         }
         return null; //non esiste percorso
     }
