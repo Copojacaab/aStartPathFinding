@@ -61,7 +61,7 @@ public class GridPanel extends JPanel{
                 g.setColor(cellColor);
                 g.fillRect(drawX, drawY, cellSize, cellSize);
                 // disegno bordo nero (griglia)
-                g.setColor(Color.black);
+                g.setColor(new Color(70,70,70));
                 g.drawRect(drawX, drawY, cellSize, cellSize);
             }
         }
@@ -70,8 +70,9 @@ public class GridPanel extends JPanel{
     private Color getColorForType(NodeType type){
         switch (type) {
             case EMPTY:
-                return Color.white;            case WALL:
-                return Color.black;
+                return new Color(100,100,100);         
+            case WALL:
+                return new Color(30,30,30);
             case START:
                 return Color.green;
             case END:

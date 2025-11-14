@@ -37,17 +37,17 @@ public class ControlPanel extends JPanel{
         wrapperControl.setLayout(new BoxLayout(wrapperControl, BoxLayout.Y_AXIS));
 
         // init dei bottoni
-        this.resetBtn = new JButton("Reset");
-        this.clearPathBtn = new JButton("Reset Path");
-        this.solveBtn = new JButton("Solve");
+        this.resetBtn = new JButton("Reset: 🔄");
+        this.clearPathBtn = new JButton("Reset Path ❌");
+        this.solveBtn = new JButton("Solve: ▶️");
 
-        this.eraseBtn = new JToggleButton("Erase");
-        this.pointsBtn = new JToggleButton("Start/End");
-        this.wallBtn = new JToggleButton("Walls");
+        this.eraseBtn = new JToggleButton("Erase: ✏️");
+        this.pointsBtn = new JToggleButton("Start/End: 📍");
+        this.wallBtn = new JToggleButton("Walls: 🧱");
 
         this.heuristicSlider = new JSlider(10,100,10);
 
-        this.randMazeBtn = new JButton("Random Maze");
+        this.randMazeBtn = new JButton("Random Maze: 🎲");
 
         // configurazione slider
         heuristicSlider.setMajorTickSpacing(10);
@@ -75,7 +75,7 @@ public class ControlPanel extends JPanel{
 // In ControlPanel.java
 private void setButtonPreferredSize(){
     Dimension buttonSize = new Dimension(180, 35);
-    Dimension maxButtonSize = new Dimension(Integer.MAX_VALUE, 50);
+    Dimension maxButtonSize = new Dimension(Integer.MAX_VALUE, 70);
 
     resetBtn.setPreferredSize(buttonSize);
     resetBtn.setMaximumSize(maxButtonSize);
