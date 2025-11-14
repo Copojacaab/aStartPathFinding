@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
+import javax.swing.JSplitPane;
 
 public class MainFrame extends JFrame{
     private GridPanel gridPanel;
@@ -26,8 +27,16 @@ public class MainFrame extends JFrame{
 
         this.gridPanel = new GridPanel();
         this.controlPanel = new ControlPanel();
-        add(gridPanel, BorderLayout.CENTER);
-        add(controlPanel, BorderLayout.EAST);
+
+        JSplitPane splitPane = new JSplitPane();
+
+        splitPane.setLeftComponent(gridPanel);
+        splitPane.setRightComponent(controlPanel);
+
+        splitPane.setResizeWeight(0.9);
+        splitPane.setDividerLocation(0.9);
+        
+        this.add(splitPane, BorderLayout.CENTER);
     }
 
     public GridPanel getGridPanel() { return this.gridPanel; }

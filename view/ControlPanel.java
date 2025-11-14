@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -49,7 +50,7 @@ public class ControlPanel extends JPanel{
         this.randMazeBtn = new JButton("Random Maze");
 
         // configurazione slider
-        heuristicSlider.setMajorTickSpacing(1);
+        heuristicSlider.setMajorTickSpacing(10);
         heuristicSlider.setPaintTicks(true);
         heuristicSlider.setPaintLabels(true);
 
@@ -68,57 +69,67 @@ public class ControlPanel extends JPanel{
 
         // aggiungo il wrapper al panel
         this.add(wrapperControl, BorderLayout.NORTH);
-        this.setPreferredSize(new java.awt.Dimension(200, 0));
     }
 
     // --------------------------- HELPER ------------------
-    private void setButtonPreferredSize(){
-        Dimension buttonSize = new Dimension(180,35);
+// In ControlPanel.java
+private void setButtonPreferredSize(){
+    Dimension buttonSize = new Dimension(180, 35);
+    Dimension maxButtonSize = new Dimension(Integer.MAX_VALUE, 50);
 
-        resetBtn.setPreferredSize(buttonSize);
-        resetBtn.setMaximumSize(buttonSize);
+    resetBtn.setPreferredSize(buttonSize);
+    resetBtn.setMaximumSize(maxButtonSize);
 
-        resetBtn.setPreferredSize(buttonSize);
-        resetBtn.setMaximumSize(buttonSize);
+    clearPathBtn.setPreferredSize(buttonSize); // <-- CORRETTO
+    clearPathBtn.setMaximumSize(maxButtonSize);
 
-        resetBtn.setPreferredSize(buttonSize);
-        resetBtn.setMaximumSize(buttonSize);
+    solveBtn.setPreferredSize(buttonSize); // <-- CORRETTO
+    solveBtn.setMaximumSize(maxButtonSize);
 
-        resetBtn.setPreferredSize(buttonSize);
-        resetBtn.setMaximumSize(buttonSize);
+    wallBtn.setPreferredSize(buttonSize); // <-- CORRETTO
+    wallBtn.setMaximumSize(maxButtonSize);
 
-        resetBtn.setPreferredSize(buttonSize);
-        resetBtn.setMaximumSize(buttonSize);
+    pointsBtn.setPreferredSize(buttonSize); // <-- CORRETTO
+    pointsBtn.setMaximumSize(maxButtonSize);
 
-        resetBtn.setPreferredSize(buttonSize);
-        resetBtn.setMaximumSize(buttonSize);
+    eraseBtn.setPreferredSize(buttonSize); // <-- CORRETTO
+    eraseBtn.setMaximumSize(maxButtonSize);
+    
+    randMazeBtn.setPreferredSize(buttonSize); // <-- CORRETTO
+    randMazeBtn.setMaximumSize(maxButtonSize);
 
-        resetBtn.setPreferredSize(buttonSize);
-        resetBtn.setMaximumSize(buttonSize);
-
-        heuristicSlider.setPreferredSize(new Dimension(180, heuristicSlider.getPreferredSize().height));
-        heuristicSlider.setMaximumSize(new Dimension(180, heuristicSlider.getPreferredSize().height));
-    }
+    heuristicSlider.setPreferredSize(new Dimension(180, heuristicSlider.getPreferredSize().height));
+    heuristicSlider.setMaximumSize(new Dimension(Integer.MAX_VALUE, heuristicSlider.getPreferredSize().height));
+}
 
     private void addButtons(JPanel wrapperControl){
+        int spacing = 10;
+
         resetBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
         wrapperControl.add(resetBtn);
 
+        wrapperControl.add(Box.createVerticalStrut(spacing));
         clearPathBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
         wrapperControl.add(clearPathBtn);
+        wrapperControl.add(Box.createVerticalStrut(spacing));
         solveBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
         wrapperControl.add(solveBtn);
         
+        wrapperControl.add(Box.createVerticalStrut(spacing));
         wallBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
         wrapperControl.add(wallBtn);
+        wrapperControl.add(Box.createVerticalStrut(spacing));
         pointsBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
         wrapperControl.add(pointsBtn);
+        wrapperControl.add(Box.createVerticalStrut(spacing));
         eraseBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
         wrapperControl.add(eraseBtn);
 
+        wrapperControl.add(Box.createVerticalStrut(spacing));
         heuristicSlider.setAlignmentX(Component.LEFT_ALIGNMENT);
         wrapperControl.add(heuristicSlider);
-        
+
+        wrapperControl.add(Box.createVerticalStrut(spacing));
         randMazeBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
         wrapperControl.add(randMazeBtn);
     }
