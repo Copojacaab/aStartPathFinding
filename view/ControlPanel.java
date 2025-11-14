@@ -153,9 +153,7 @@ public class ControlPanel extends JPanel{
         // colori
         private final Color INACTIVE_COLOR = new Color(80, 88, 104);
         private final Color HOVER_COLOR = new Color(70, 78, 94);
-        private final Color ACTIVE_COLOR = Color.yellow;
-        private final Color TEXT_INACTIVE_COLOR = new Color(230, 230, 230);
-        private final Color TEXT_ACTIVE_COLOR = Color.BLACK; // Testo scuro per lo sfondo chiaro
+        private final Color PRESSED_COLOR = new Color(70, 78, 94);
 
         public ProportionalButton(String text){
             super(text);
@@ -203,14 +201,23 @@ public class ControlPanel extends JPanel{
         public void mouseExited(MouseEvent e) {
             setBackground(INACTIVE_COLOR);
         }
+        @Override
+        public void mousePressed(MouseEvent e) {
+            setBackground(PRESSED_COLOR);
+        }
 
         // inutili
         @Override
         public void mouseClicked(MouseEvent e) {}
+        
         @Override
-        public void mousePressed(MouseEvent e) {}
-        @Override
-        public void mouseReleased(MouseEvent e) {}
+        public void mouseReleased(MouseEvent e) {
+            if (contains(e.getPoint())) {
+                setBackground(HOVER_COLOR); // Se sì, torna a hover
+            } else {
+                setBackground(INACTIVE_COLOR); // Se no, torna a inattivo
+            }
+        }
     }
 
     private class ProportionalToggleButton extends JToggleButton implements MouseListener{
@@ -284,11 +291,15 @@ public class ControlPanel extends JPanel{
 
         @Override
         public void mouseEntered(MouseEvent e) {
-            setBackground(HOVER_COLOR);
+            if(!isSelected()){
+                setBackground(HOVER_COLOR);
+            }
         }
         @Override
         public void mouseExited(MouseEvent e) {
-            setBackground(INACTIVE_COLOR);
+            if(!isSelected()){
+                setBackground(INACTIVE_COLOR);
+            }
         }
 
         // inutili
