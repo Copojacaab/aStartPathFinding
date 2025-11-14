@@ -14,8 +14,8 @@ public class GridPanel extends JPanel{
 
     /** metodo per collegare il model alla view */
     public void setGrid(Grid grid){
-        repaint(); 
         this.grid = grid;
+        repaint(); 
     }
 
     // @Override
@@ -45,6 +45,12 @@ public class GridPanel extends JPanel{
         int cellWidth = panelWidth / grid.getWidth();
         int cellHeight = panelHeight / grid.getHeight();
 
+        // dimensione piu' piccola per coerenza celle
+        int cellSize = Math.min(cellHeight, cellWidth);
+
+        // calcolo offset per centrare
+        int xOffset = (panelWidth - (grid.getWidth() * cellSize)) / 2;
+        int yOffset = (panelHeight - (grid.getHeight() * cellSize)) / 2;
 
         int gridWidth = grid.getWidth();
         int gridHeight = grid.getHeight();
@@ -56,15 +62,15 @@ public class GridPanel extends JPanel{
                 Color cellColor = getColorForType(node.getType());
 
                 // calcolo le coordiante in px
-                int drawX = x* cellWidth;
-                int drawY = y * cellHeight;
+                int drawX = x * cellSize + xOffset;
+                int drawY = y * cellSize + yOffset;
 
                 // disegno rettangolo pieno(cella)
                 g.setColor(cellColor);
-                g.fillRect(drawX, drawY, cellWidth, cellWidth);
+                g.fillRect(drawX, drawY, cellSize, cellSize);
                 // disegno bordo nero (griglia)
                 g.setColor(Color.black);
-                g.drawRect(drawX, drawY, cellWidth, cellWidth);
+                g.drawRect(drawX, drawY, cellSize, cellSize);
             }
         }
     }
