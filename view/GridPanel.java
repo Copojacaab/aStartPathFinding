@@ -15,6 +15,7 @@ public class GridPanel extends JPanel{
     /** metodo per collegare il model alla view */
     public void setGrid(Grid grid){
         this.grid = grid;
+        this.setBackground(new Color(58, 63, 75));
         repaint(); 
     }
 
@@ -61,7 +62,7 @@ public class GridPanel extends JPanel{
                 g.setColor(cellColor);
                 g.fillRect(drawX, drawY, cellSize, cellSize);
                 // disegno bordo nero (griglia)
-                g.setColor(new Color(70,70,70));
+                g.setColor(new Color(80, 85, 98));
                 g.drawRect(drawX, drawY, cellSize, cellSize);
             }
         }

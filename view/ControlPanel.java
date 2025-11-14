@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -69,6 +70,10 @@ public class ControlPanel extends JPanel{
 
         // aggiungo il wrapper al panel
         this.add(wrapperControl, BorderLayout.NORTH);
+
+        // colori
+        this.setBackground(new Color(59, 64, 74));
+        wrapperControl.setBackground(new Color(59,64, 74));
     }
 
     // --------------------------- HELPER ------------------
