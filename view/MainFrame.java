@@ -14,7 +14,7 @@ public class MainFrame extends JFrame{
         
         initLayout();
 
-        pack();
+        setSize(800, 600);
         
         setLocationRelativeTo(null); //centra la finestra
     }

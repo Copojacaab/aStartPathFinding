@@ -12,24 +12,22 @@ public class GridPanel extends JPanel{
     
     private Grid grid; //riferimento al model
 
-    private static final int CELL_SIZE = 25; //25x25 px
-
     /** metodo per collegare il model alla view */
     public void setGrid(Grid grid){
         repaint(); 
         this.grid = grid;
     }
 
-    @Override
-    public Dimension getPreferredSize(){
-        if (grid == null) {
-            return new Dimension(800,600);
-        }
+    // @Override
+    // public Dimension getPreferredSize(){
+    //     if (grid == null) {
+    //         return new Dimension(800,600);
+    //     }
 
-        int width = grid.getWidth() * CELL_SIZE;
-        int height = grid.getHeight() * CELL_SIZE;
-        return new Dimension(width, height);
-    }
+    //     int width = grid.getWidth() * CELL_SIZE;
+    //     int height = grid.getHeight() * CELL_SIZE;
+    //     return new Dimension(width, height);
+    // }
 
     /**
      * Chiamato da Swing 
@@ -38,9 +36,15 @@ public class GridPanel extends JPanel{
     protected void paintComponent(Graphics g){
         //cleanup
         super.paintComponent(g);
-
         if(grid == null)
             return;
+        // prendo le dimensioni del pannello
+        int panelWidth = getWidth();
+        int panelHeight = getHeight();
+        // calcolo dim celle
+        int cellWidth = panelWidth / grid.getWidth();
+        int cellHeight = panelHeight / grid.getHeight();
+
 
         int gridWidth = grid.getWidth();
         int gridHeight = grid.getHeight();
@@ -52,15 +56,15 @@ public class GridPanel extends JPanel{
                 Color cellColor = getColorForType(node.getType());
 
                 // calcolo le coordiante in px
-                int drawX = x * CELL_SIZE;
-                int drawY = y * CELL_SIZE;
+                int drawX = x* cellWidth;
+                int drawY = y * cellHeight;
 
                 // disegno rettangolo pieno(cella)
                 g.setColor(cellColor);
-                g.fillRect(drawX, drawY, CELL_SIZE, CELL_SIZE);
+                g.fillRect(drawX, drawY, cellWidth, cellWidth);
                 // disegno bordo nero (griglia)
                 g.setColor(Color.black);
-                g.drawRect(drawX, drawY, CELL_SIZE, CELL_SIZE);
+                g.drawRect(drawX, drawY, cellWidth, cellWidth);
             }
         }
     }
@@ -85,6 +89,4 @@ public class GridPanel extends JPanel{
         }
     }
 
-    // getters and setters
-    public int getCellSize(){ return CELL_SIZE; }
 }
