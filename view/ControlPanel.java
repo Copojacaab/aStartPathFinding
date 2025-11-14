@@ -1,10 +1,15 @@
 package view;
 
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JToggleButton;
+import javax.swing.border.EmptyBorder;
 public class ControlPanel extends JPanel{
     
     private JButton resetBtn;
@@ -20,9 +25,15 @@ public class ControlPanel extends JPanel{
     private JButton randMazeBtn;
 
     public ControlPanel(){
-        // layout a colonna
-        //5,5 per gap tra i componenti
+        // layout con contenitore
+        this.setLayout(new BorderLayout());
+        this.setBorder(new EmptyBorder(10,10,10,10)); //padding intorno al panel
 
+        // creo wrapper intero
+        JPanel wrapperControl = new JPanel();
+        wrapperControl.setLayout(new BoxLayout(wrapperControl, BoxLayout.Y_AXIS));
+
+        // init dei bottoni
         this.resetBtn = new JButton("Reset");
         this.clearPathBtn = new JButton("Reset Path");
         this.solveBtn = new JButton("Solve");
@@ -35,27 +46,32 @@ public class ControlPanel extends JPanel{
 
         this.randMazeBtn = new JButton("Random Maze");
 
-        // da mettere in helper
-        heuristicSlider.setMajorTickSpacing(10);
+        // configurazione slider
+        heuristicSlider.setMajorTickSpacing(1);
         heuristicSlider.setPaintTicks(true);
         heuristicSlider.setPaintLabels(true);
-        // raggruppo in ButtonGroup per sicurezza unicita attivazione
+
+        // raggruppo i togglebtn
         ButtonGroup toolGroup = new ButtonGroup();
         toolGroup.add(wallBtn);
         toolGroup.add(pointsBtn);
         toolGroup.add(eraseBtn);
 
-        this.add(resetBtn);
-        this.add(clearPathBtn);
-        this.add(solveBtn);
+        // aggiungo le componenti al wrapper
+        wrapperControl.add(resetBtn);
+        wrapperControl.add(clearPathBtn);
+        wrapperControl.add(solveBtn);
         
-        this.add(wallBtn);
-        this.add(pointsBtn);
-        this.add(eraseBtn);
+        wrapperControl.add(wallBtn);
+        wrapperControl.add(pointsBtn);
+        wrapperControl.add(eraseBtn);
 
-        this.add(heuristicSlider);
+        wrapperControl.add(heuristicSlider);
         
-        this.add(randMazeBtn);
+        wrapperControl.add(randMazeBtn);
+
+        // aggiungo il wrapper al panel
+        this.add(wrapperControl, BorderLayout.NORTH);
     }
 
     // getter

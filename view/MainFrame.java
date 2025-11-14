@@ -25,7 +25,7 @@ public class MainFrame extends JFrame{
         this.gridPanel = new GridPanel();
         this.controlPanel = new ControlPanel();
         add(gridPanel, BorderLayout.CENTER);
-        add(controlPanel, BorderLayout.SOUTH);
+        add(controlPanel, BorderLayout.EAST);
     }
 
     public GridPanel getGridPanel() { return this.gridPanel; }
