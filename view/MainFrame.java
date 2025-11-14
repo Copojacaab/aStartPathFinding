@@ -1,10 +1,10 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 
 import javax.swing.JFrame;
-import javax.swing.JSplitPane;
 
 public class MainFrame extends JFrame{
     private GridPanel gridPanel;
@@ -16,26 +16,56 @@ public class MainFrame extends JFrame{
         
         initLayout();
 
-        setSize(800, 600);
+        setSize(1000, 700);
 
         this.setMinimumSize(new Dimension(640, 480));
         setLocationRelativeTo(null); //centra la finestra
     }
 
     private void initLayout(){
-        setLayout(new BorderLayout());
+        // 1. Imposta il GridBagLayout sul Frame
+        setLayout(new GridBagLayout());
+
+        // 2. Crea l'oggetto "regole"
+        // Questo oggetto ci serve per dire al layout come comportarsi.
+        GridBagConstraints gbc = new GridBagConstraints();
 
         this.gridPanel = new GridPanel();
         this.controlPanel = new ControlPanel();
         
-        JSplitPane splitPane = new JSplitPane();
-        splitPane.setLeftComponent(gridPanel);
-        splitPane.setRightComponent(controlPanel);
-
-        splitPane.setResizeWeight(0.9);
-        splitPane.setDividerLocation(0.9);
+        // --- Regole per il GridPanel (Colonna 0) ---
         
-        this.add(splitPane, BorderLayout.CENTER);
+        // Vogliamo che si espanda in entrambe le direzioni
+        gbc.fill = GridBagConstraints.BOTH; 
+        
+        gbc.gridx = 0; // Colonna 0
+        gbc.gridy = 0; // Riga 0
+        
+        // Questo è l'equivalente del tuo "setResizeWeight(0.9)"
+        // Diciamo: "Prendi il 90% di tutto lo spazio extra orizzontale"
+        gbc.weightx = 0.9; 
+        
+        // Diciamo: "Prendi il 100% di tutto lo spazio extra verticale"
+        gbc.weighty = 1.0; 
+        
+        // Aggiungi il pannello con queste regole
+        this.add(gridPanel, gbc);
+
+        // --- Regole per il ControlPanel (Colonna 1) ---
+        
+        gbc.gridx = 1; // Colonna 1
+        gbc.gridy = 0; // Riga 0
+        
+        // Diciamo: "Prendi il 10% di tutto lo spazio extra orizzontale"
+        gbc.weightx = 0.1;
+        
+        // Il weighty rimane 1.0 per occupare tutta l'altezza
+        gbc.weighty = 1.0; 
+        
+        // Aggiungi il pannello con queste nuove regole
+        this.add(controlPanel, gbc);
+
+        // NON serve più nessun JSplitPane.
     }
 
 

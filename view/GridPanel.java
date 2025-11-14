@@ -52,7 +52,7 @@ public class GridPanel extends JPanel{
                 DynamicDimension dims = getDynamicDimension();
                 int cellSize = dims.getCellSize();
                 int xOffset = dims.getXOffSet();
-                int yOffset = 10;
+                int yOffset = dims.getYOffset();
 
                 // calcolo le coordiante in px
                 int drawX = x * cellSize + xOffset;
@@ -100,7 +100,7 @@ public class GridPanel extends JPanel{
         DynamicDimension dims = getDynamicDimension();
         int cellSize = dims.getCellSize();
         int xOffset = dims.getXOffSet();
-        int yOffset = 10;
+        int yOffset = dims.getYOffset();
 
         // prendo il nodo cliccato 
         int cellX = (mouseX - xOffset) / cellSize;

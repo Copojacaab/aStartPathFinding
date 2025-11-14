@@ -5,9 +5,10 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
+import java.awt.event.ItemEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -15,7 +16,6 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JToggleButton;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 public class ControlPanel extends JPanel{
     
@@ -32,7 +32,7 @@ public class ControlPanel extends JPanel{
     private JButton randMazeBtn;
 
     public ControlPanel(){
-        Font buttonFont = new Font("Tahoma", Font.BOLD, 12);
+        Font buttonFont = new Font("Tahoma", Font.BOLD, 20);
         // layout con contenitore
         this.setLayout(new BorderLayout());
         this.setBorder(new EmptyBorder(10,10,10,10)); //padding intorno al panel
@@ -41,54 +41,46 @@ public class ControlPanel extends JPanel{
         JPanel wrapperControl = new JPanel();
         wrapperControl.setLayout(new BoxLayout(wrapperControl, BoxLayout.Y_AXIS));
 
-        // per togliere il bordo
-        Border EmptyBorder = BorderFactory.createEmptyBorder();
         // init dei bottoni
-        this.resetBtn = new JButton("Reset: 🔄");
-        this.resetBtn.setBackground(new Color(80, 88, 102));
-        this.resetBtn.setForeground(new Color(230, 230, 230));
-        this.resetBtn.setBorder(EmptyBorder);
+        this.resetBtn = new ProportionalButton("Reset: 🔄");
+        this.resetBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
         this.resetBtn.setFont(buttonFont);
-        this.clearPathBtn = new JButton("Reset Path ❌");
-        this.clearPathBtn.setBackground(new Color(80, 88, 102));
-        this.clearPathBtn.setForeground(new Color(230, 230, 230));
-        this.clearPathBtn.setBorder(EmptyBorder);
-        this.solveBtn = new JButton("Solve: ▶️");
-        this.solveBtn.setBackground(new Color(80, 88, 102));
-        this.solveBtn.setForeground(new Color(230, 230, 230));
-        this.solveBtn.setBorder(EmptyBorder);
+        this.clearPathBtn = new ProportionalButton("Reset Path ❌");
+        this.clearPathBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
+        this.clearPathBtn.setFont(buttonFont);
+        this.solveBtn = new ProportionalButton("Solve: ▶️");
+        this.solveBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
+        this.solveBtn.setFont(buttonFont);
 
-        this.eraseBtn = new JToggleButton("Erase: ✏️");
-        this.eraseBtn.setBackground(new Color(80, 88, 102));
-        this.eraseBtn.setForeground(new Color(230, 230, 230));
-        this.eraseBtn.setBorder(EmptyBorder);
-        this.pointsBtn = new JToggleButton("Start/End: 📍");
-        this.pointsBtn.setBackground(new Color(80, 88, 102));
-        this.pointsBtn.setForeground(new Color(230, 230, 230));
-        this.pointsBtn.setBorder(EmptyBorder);
-        this.wallBtn = new JToggleButton("Walls: 🧱");
-        this.wallBtn.setBackground(new Color(80, 88, 102));
-        this.wallBtn.setForeground(new Color(230, 230, 230));
-        this.wallBtn.setBorder(EmptyBorder);
+        this.eraseBtn = new ProportionalToggleButton("Erase: ✏️");
+        this.eraseBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
+        this.eraseBtn.setFont(buttonFont);
+        this.pointsBtn = new ProportionalToggleButton("Start/End: 📍");
+        this.pointsBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
+        this.pointsBtn.setFont(buttonFont);
+        this.wallBtn = new ProportionalToggleButton("Walls: 🧱");
+        this.wallBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
+        this.wallBtn.setFont(buttonFont);
 
-        this.heuristicSlider = new JSlider(10,100,10);
-        this.heuristicSlider.setBackground(new Color(80, 88, 102));
-        this.heuristicSlider.setForeground(new Color(230, 230, 230));
-        this.heuristicSlider.setBorder(EmptyBorder);
+        this.heuristicSlider = new JSlider();
+        this.heuristicSlider.setAlignmentX(Component.LEFT_ALIGNMENT);
+        this.heuristicSlider.setFont(buttonFont);
 
-        this.randMazeBtn = new JButton("Random Maze: 🎲");
-        this.randMazeBtn.setBackground(new Color(80, 88, 102));
-        this.randMazeBtn.setForeground(new Color(230, 230, 230));
-        this.randMazeBtn.setBorder(EmptyBorder);
+        this.randMazeBtn = new ProportionalButton("Random Maze: 🎲");
+        this.randMazeBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
+        this.randMazeBtn.setFont(buttonFont);
 
         // configurazione slider
         heuristicSlider.setMajorTickSpacing(10);
         heuristicSlider.setPaintTicks(true);
         heuristicSlider.setPaintLabels(true);
 
-        // dimensioni dei bottoni
-        setButtonPreferredSize();
-
+        int sliderHeight = heuristicSlider.getPreferredSize().height;
+        heuristicSlider.setMaximumSize(new Dimension(Integer.MAX_VALUE, sliderHeight));
+        heuristicSlider.setBackground(new Color(59, 64, 74));
+        heuristicSlider.setForeground(new Color(230, 230, 230));
+        heuristicSlider.setOpaque(true);
+        
         // raggruppo i togglebtn
         ButtonGroup toolGroup = new ButtonGroup();
         toolGroup.add(wallBtn);
@@ -105,69 +97,36 @@ public class ControlPanel extends JPanel{
         // colori
         this.setBackground(new Color(59, 64, 74));
         wrapperControl.setBackground(new Color(59,64, 74));
+
+        this.setMinimumSize(new Dimension(200,0));
     }
 
     // --------------------------- HELPER ------------------
-// In ControlPanel.java
-private void setButtonPreferredSize(){
-    Dimension buttonSize = new Dimension(180, 50);
-    Dimension maxButtonSize = new Dimension(360, 100);
-
-    resetBtn.setPreferredSize(buttonSize);
-    resetBtn.setMaximumSize(maxButtonSize);
-
-    clearPathBtn.setPreferredSize(buttonSize); // <-- CORRETTO
-    clearPathBtn.setMaximumSize(maxButtonSize);
-
-    solveBtn.setPreferredSize(buttonSize); // <-- CORRETTO
-    solveBtn.setMaximumSize(maxButtonSize);
-
-    wallBtn.setPreferredSize(buttonSize); // <-- CORRETTO
-    wallBtn.setMaximumSize(maxButtonSize);
-
-    pointsBtn.setPreferredSize(buttonSize); // <-- CORRETTO
-    pointsBtn.setMaximumSize(maxButtonSize);
-
-    eraseBtn.setPreferredSize(buttonSize); // <-- CORRETTO
-    eraseBtn.setMaximumSize(maxButtonSize);
-    
-    randMazeBtn.setPreferredSize(buttonSize); // <-- CORRETTO
-    randMazeBtn.setMaximumSize(maxButtonSize);
-
-    heuristicSlider.setPreferredSize(new Dimension(180, heuristicSlider.getPreferredSize().height));
-    heuristicSlider.setMaximumSize(new Dimension(360, heuristicSlider.getPreferredSize().height));
-}
+        // Dimension buttonSize = new Dimension(180, 50);
+        // Dimension maxButtonSize = new Dimension(360, 100);
 
     private void addButtons(JPanel wrapperControl){
         int spacing = 10;
 
-        resetBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
         wrapperControl.add(resetBtn);
 
         wrapperControl.add(Box.createVerticalStrut(spacing));
-        clearPathBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
         wrapperControl.add(clearPathBtn);
         wrapperControl.add(Box.createVerticalStrut(spacing));
-        solveBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
         wrapperControl.add(solveBtn);
         
         wrapperControl.add(Box.createVerticalStrut(spacing));
-        wallBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
         wrapperControl.add(wallBtn);
         wrapperControl.add(Box.createVerticalStrut(spacing));
-        pointsBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
         wrapperControl.add(pointsBtn);
         wrapperControl.add(Box.createVerticalStrut(spacing));
-        eraseBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
         wrapperControl.add(eraseBtn);
 
         wrapperControl.add(Box.createVerticalStrut(spacing));
-        heuristicSlider.setAlignmentX(Component.LEFT_ALIGNMENT);
-        wrapperControl.add(heuristicSlider);
+        wrapperControl.add(randMazeBtn);
 
         wrapperControl.add(Box.createVerticalStrut(spacing));
-        randMazeBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
-        wrapperControl.add(randMazeBtn);
+        wrapperControl.add(heuristicSlider);
     }
     // getter
     public JButton getResetBtn() { return this.resetBtn; }
@@ -178,4 +137,168 @@ private void setButtonPreferredSize(){
     public JToggleButton getWallBtn() { return this.wallBtn; }
     public JButton getRandMaze() { return this.randMazeBtn; }
     public JSlider getHeuristicSlider() { return heuristicSlider; }
+
+    /**bottone personalizzato per proportional scaling */
+    private class ProportionalButton extends JButton implements MouseListener{
+        private double ratio = 50.0 / 180.0;
+
+        private int minWidth = 180;
+        private int minHeight = (int) (minWidth * ratio);
+        private final Dimension MIN_BUTTON_SIZE = new Dimension(minWidth, minHeight);
+
+        private int maxWidth = 500;
+        private int maxHeight = (int) (maxWidth * ratio);
+        private final Dimension MAX_BUTTON_SIZE = new Dimension(maxWidth, maxHeight);
+
+        // colori
+        private final Color INACTIVE_COLOR = new Color(80, 88, 104);
+        private final Color HOVER_COLOR = new Color(70, 78, 94);
+        private final Color ACTIVE_COLOR = Color.yellow;
+        private final Color TEXT_INACTIVE_COLOR = new Color(230, 230, 230);
+        private final Color TEXT_ACTIVE_COLOR = Color.BLACK; // Testo scuro per lo sfondo chiaro
+
+        public ProportionalButton(String text){
+            super(text);
+            
+            setBackground(new Color(80, 88, 102));
+            setForeground(new Color(230, 230, 230));
+            setOpaque(true);
+            setBorderPainted(false);
+
+            addMouseListener(this);
+        }
+
+        private Dimension getProportionalSize(){
+            int width = getParent().getWidth();
+
+            if(width < minWidth){
+                return MIN_BUTTON_SIZE;
+            }else if (width > maxWidth) {
+                return MAX_BUTTON_SIZE;
+            } else {
+                // calcolo altezza con la proporzione
+                int height = (int) (width * ratio);
+                return new Dimension(width, height);
+            }
+            
+
+        }
+        
+        // sovrascrivo i metodi del layout manager
+        @Override
+        public Dimension getPreferredSize() {
+            return getProportionalSize();
+        }
+
+        @Override
+        public Dimension getMaximumSize() {
+            // Diciamo che la dimensione massima è la stessa della preferita
+            return getProportionalSize(); 
+        }
+                @Override
+        public void mouseEntered(MouseEvent e) {
+            setBackground(HOVER_COLOR);
+        }
+        @Override
+        public void mouseExited(MouseEvent e) {
+            setBackground(INACTIVE_COLOR);
+        }
+
+        // inutili
+        @Override
+        public void mouseClicked(MouseEvent e) {}
+        @Override
+        public void mousePressed(MouseEvent e) {}
+        @Override
+        public void mouseReleased(MouseEvent e) {}
+    }
+
+    private class ProportionalToggleButton extends JToggleButton implements MouseListener{
+
+        private double ratio = 50.0 / 180.0;
+
+        // dimensioni
+        private int minWidth = 180;
+        private int minHeight = (int) (minWidth * ratio);
+        private final Dimension MIN_BUTTON_SIZE = new Dimension(minWidth, minHeight);
+
+        private int maxWidth = 500;
+        private int maxHeight = (int) (maxWidth * ratio);
+        private final Dimension MAX_TOGGLE_SIZE = new Dimension(maxWidth, maxHeight);
+
+        private final Color INACTIVE_COLOR = new Color(80, 88, 104);
+        private final Color HOVER_COLOR = new Color(70, 78, 94);
+        private final Color ACTIVE_COLOR = Color.yellow;
+        private final Color TEXT_INACTIVE_COLOR = new Color(230, 230, 230);
+        private final Color TEXT_ACTIVE_COLOR = Color.BLACK; // Testo scuro per lo sfondo chiaro
+
+        public ProportionalToggleButton(String text){
+            super(text);
+            
+            setBackground(INACTIVE_COLOR);
+            setForeground(new Color(230, 230, 230));
+            setOpaque(true);
+            setBorderPainted(false);
+
+            this.addMouseListener(this);
+            // aggiungo il listener a se stesso
+            this.addItemListener(e -> {
+                if(e.getStateChange() == ItemEvent.SELECTED) {
+                    setBackground(ACTIVE_COLOR);
+                    setForeground(TEXT_ACTIVE_COLOR); // <-- Aggiungi questo
+                } else if (e.getStateChange() == ItemEvent.DESELECTED){
+                    setBackground(INACTIVE_COLOR);
+                    setForeground(TEXT_INACTIVE_COLOR); // <-- Aggiungi questo
+                }
+            });
+        }
+
+        private Dimension getProportionalSize(){
+            int width = getParent().getWidth();
+
+            if (width < minWidth){
+                return MIN_BUTTON_SIZE;
+            } else if (width > maxWidth) {
+                return MAX_TOGGLE_SIZE;
+            } else {
+                // calcolo altezza con la proporzione
+                int height = (int) (width * ratio);
+                return new Dimension(width, height);
+            }
+
+        }
+        
+        // sovrascrivo i metodi del layout manager
+        @Override
+        public Dimension getPreferredSize() {
+            return getProportionalSize();
+        }
+
+        @Override
+        public Dimension getMaximumSize() {
+            // Diciamo che la dimensione massima è la stessa della preferita
+            return getProportionalSize(); 
+        }
+
+
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            setBackground(HOVER_COLOR);
+        }
+        @Override
+        public void mouseExited(MouseEvent e) {
+            setBackground(INACTIVE_COLOR);
+        }
+
+        // inutili
+        @Override
+        public void mouseClicked(MouseEvent e) {}
+        @Override
+        public void mousePressed(MouseEvent e) {}
+        @Override
+        public void mouseReleased(MouseEvent e) {}
+    }
 }
+
+
