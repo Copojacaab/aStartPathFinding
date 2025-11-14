@@ -38,19 +38,6 @@ public class GridPanel extends JPanel{
         super.paintComponent(g);
         if(grid == null)
             return;
-        // prendo le dimensioni del pannello
-        int panelWidth = getWidth();
-        int panelHeight = getHeight();
-        // calcolo dim celle
-        int cellWidth = panelWidth / grid.getWidth();
-        int cellHeight = panelHeight / grid.getHeight();
-
-        // dimensione piu' piccola per coerenza celle
-        int cellSize = Math.min(cellHeight, cellWidth);
-
-        // calcolo offset per centrare
-        int xOffset = (panelWidth - (grid.getWidth() * cellSize)) / 2;
-        int yOffset = (panelHeight - (grid.getHeight() * cellSize)) / 2;
 
         int gridWidth = grid.getWidth();
         int gridHeight = grid.getHeight();
@@ -60,6 +47,11 @@ public class GridPanel extends JPanel{
             for(int x = 0; x < gridWidth; x++){
                 Node node = grid.getNode(x, y);
                 Color cellColor = getColorForType(node.getType());
+
+                DynamicDimension dims = getDynamicDimension();
+                int cellSize = dims.getCellSize();
+                int xOffset = dims.getXOffSet();
+                int yOffset = dims.getYOffset();
 
                 // calcolo le coordiante in px
                 int drawX = x * cellSize + xOffset;
@@ -95,4 +87,58 @@ public class GridPanel extends JPanel{
         }
     }
 
+    /**
+     * Metodo per tradurre px del mouse in nodo della griglia
+     * incapsulazione della griglia
+     */
+    public Node getNodeAt(int mouseX, int mouseY){
+        if (grid == null) return null; //check
+
+        // prendo le dimensioni dinamiche
+        DynamicDimension dims = getDynamicDimension();
+        int cellSize = dims.getCellSize();
+        int xOffset = dims.getXOffSet();
+        int yOffset = dims.getYOffset();
+
+        // prendo il nodo cliccato 
+        int cellX = (mouseX - xOffset) / cellSize;
+        int cellY = (mouseY - yOffset) / cellSize;
+
+        return grid.getNode(cellX, cellY);
+    }
+
+    // -------------- HELPER ---------------
+    private DynamicDimension getDynamicDimension(){
+        // prendo le dimensioni del pannello
+        int panelWidth = getWidth();
+        int panelHeight = getHeight();
+        // calcolo dim celle
+        int cellWidth = panelWidth / grid.getWidth();
+        int cellHeight = panelHeight / grid.getHeight();
+
+        // dimensione piu' piccola per coerenza celle
+        int cellSize = Math.min(cellHeight, cellWidth);
+
+        // calcolo offset per centrare
+        int xOffset = (panelWidth - (grid.getWidth() * cellSize)) / 2;
+        int yOffset = (panelHeight - (grid.getHeight() * cellSize)) / 2;
+
+        return new DynamicDimension(cellSize, xOffset, yOffset);
+    }
+    // Classe per restituire le dimensioni dinamiche delle celle e della griglia
+    final class DynamicDimension{
+        private final int cellSize;
+        private final int xOffset;
+        private final int yOffset;
+
+        public DynamicDimension(int cellSize, int xOffset, int yOffset){
+            this.cellSize = cellSize;
+            this.xOffset = xOffset;
+            this.yOffset = yOffset;
+        }
+
+        public int getCellSize() { return this.cellSize; }
+        public int getXOffSet() { return this.xOffset; }
+        public int getYOffset() { return this.yOffset; }
+    }
 }

@@ -20,6 +20,9 @@ public class ControlPanel extends JPanel{
     private JButton randMazeBtn;
 
     public ControlPanel(){
+        // layout a colonna
+        //5,5 per gap tra i componenti
+
         this.resetBtn = new JButton("Reset");
         this.clearPathBtn = new JButton("Reset Path");
         this.solveBtn = new JButton("Solve");

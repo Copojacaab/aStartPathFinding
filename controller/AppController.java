@@ -186,7 +186,7 @@ public class AppController implements MouseListener, MouseMotionListener, Action
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        Node node = getNodeFromMouseEvent(e);
+        Node node = view.getGridPanel().getNodeAt(e.getX(), e.getY());
 
         if (node == null || node.getType() == NodeType.START || node.getType() == NodeType.END) {
             return;
@@ -203,7 +203,7 @@ public class AppController implements MouseListener, MouseMotionListener, Action
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        Node node = getNodeFromMouseEvent(e);
+        Node node = view.getGridPanel().getNodeAt(e.getX(), e.getY());
 
         // Se è null (fuori bordi) o non valido, esci
         if (node == null || node.getType() == NodeType.START || node.getType() == NodeType.END) {
@@ -237,18 +237,6 @@ public class AppController implements MouseListener, MouseMotionListener, Action
             }
     }
 
-    // helper
-    private Node getNodeFromMouseEvent(MouseEvent e) {
-        int cellSize = view.getGridPanel().getCellSize();
-        int cellX = e.getX() / cellSize;
-        int cellY = e.getY() / cellSize;
-
-        // Check bordi delegato al Model (più pulito) o fatto qui
-        if (cellX >= 0 && cellX < model.getWidth() && cellY >= 0 && cellY < model.getHeight()) {
-            return model.getNode(cellX, cellY);
-        }
-        return null;
-    }
 
     @Override
     public void mouseMoved(MouseEvent e) {
