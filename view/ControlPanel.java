@@ -1,6 +1,8 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.BoxLayout;
@@ -51,30 +53,75 @@ public class ControlPanel extends JPanel{
         heuristicSlider.setPaintTicks(true);
         heuristicSlider.setPaintLabels(true);
 
+        // dimensioni dei bottoni
+        setButtonPreferredSize();
+
         // raggruppo i togglebtn
         ButtonGroup toolGroup = new ButtonGroup();
         toolGroup.add(wallBtn);
         toolGroup.add(pointsBtn);
         toolGroup.add(eraseBtn);
 
+        // add dei bottoni
+        addButtons(wrapperControl);
         // aggiungo le componenti al wrapper
-        wrapperControl.add(resetBtn);
-        wrapperControl.add(clearPathBtn);
-        wrapperControl.add(solveBtn);
-        
-        wrapperControl.add(wallBtn);
-        wrapperControl.add(pointsBtn);
-        wrapperControl.add(eraseBtn);
-
-        wrapperControl.add(heuristicSlider);
-        
-        wrapperControl.add(randMazeBtn);
 
         // aggiungo il wrapper al panel
         this.add(wrapperControl, BorderLayout.NORTH);
         this.setPreferredSize(new java.awt.Dimension(200, 0));
     }
 
+    // --------------------------- HELPER ------------------
+    private void setButtonPreferredSize(){
+        Dimension buttonSize = new Dimension(180,35);
+
+        resetBtn.setPreferredSize(buttonSize);
+        resetBtn.setMaximumSize(buttonSize);
+
+        resetBtn.setPreferredSize(buttonSize);
+        resetBtn.setMaximumSize(buttonSize);
+
+        resetBtn.setPreferredSize(buttonSize);
+        resetBtn.setMaximumSize(buttonSize);
+
+        resetBtn.setPreferredSize(buttonSize);
+        resetBtn.setMaximumSize(buttonSize);
+
+        resetBtn.setPreferredSize(buttonSize);
+        resetBtn.setMaximumSize(buttonSize);
+
+        resetBtn.setPreferredSize(buttonSize);
+        resetBtn.setMaximumSize(buttonSize);
+
+        resetBtn.setPreferredSize(buttonSize);
+        resetBtn.setMaximumSize(buttonSize);
+
+        heuristicSlider.setPreferredSize(new Dimension(180, heuristicSlider.getPreferredSize().height));
+        heuristicSlider.setMaximumSize(new Dimension(180, heuristicSlider.getPreferredSize().height));
+    }
+
+    private void addButtons(JPanel wrapperControl){
+        resetBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
+        wrapperControl.add(resetBtn);
+
+        clearPathBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
+        wrapperControl.add(clearPathBtn);
+        solveBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
+        wrapperControl.add(solveBtn);
+        
+        wallBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
+        wrapperControl.add(wallBtn);
+        pointsBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
+        wrapperControl.add(pointsBtn);
+        eraseBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
+        wrapperControl.add(eraseBtn);
+
+        heuristicSlider.setAlignmentX(Component.LEFT_ALIGNMENT);
+        wrapperControl.add(heuristicSlider);
+        
+        randMazeBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
+        wrapperControl.add(randMazeBtn);
+    }
     // getter
     public JButton getResetBtn() { return this.resetBtn; }
     public JButton getClearPathBtn() { return this.clearPathBtn; }
