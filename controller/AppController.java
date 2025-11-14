@@ -33,9 +33,6 @@ public class AppController implements MouseListener, MouseMotionListener, Action
 
     private ToolType currentTool;
 
-    private Node startNode;
-    private Node endNode;
-
     public AppController(Grid model, MainFrame view, ToolType currentTool) {
         this.model = model;
         this.view = view;
@@ -61,14 +58,14 @@ public class AppController implements MouseListener, MouseMotionListener, Action
 
     private void handleSolve(Double heuristicWeight) {
         // 1. check su start e end
-        if (this.startNode == null || this.endNode == null) {
+        if (model.getStartNode() == null || model.getEndNode() == null) {
             JOptionPane.showMessageDialog(view, "Errore: seleziona un nodo di partenza e uno di arrivo",
                     "Errore di input", JOptionPane.ERROR_MESSAGE);
         }
         // 2. cleanup algoritmo
         model.resetAlgorithmState();
 
-        AStarSolver solver = new AStarSolver(this.model, this.startNode, this.endNode, this.view.getGridPanel(),
+        AStarSolver solver = new AStarSolver(this.model, model.getStartNode(), model.getEndNode(), this.view.getGridPanel(),
                 heuristicWeight);
 
         // 3 ascoltatore al solver
@@ -122,8 +119,6 @@ public class AppController implements MouseListener, MouseMotionListener, Action
 
     private void handleReset() {
         model.resetAllNodes(); //reset di tutti i nodi
-        this.startNode = null;
-        this.endNode = null;
         view.getGridPanel().repaint();
     }
 
@@ -136,26 +131,6 @@ public class AppController implements MouseListener, MouseMotionListener, Action
                 node = model.getNode(x, y);
                 if (node.getType() == NodeType.PATH || node.getType() == NodeType.OPEN || node.getType() == NodeType.CLOSED) {
                     node.setType(NodeType.EMPTY);
-                }
-            }
-        }
-        view.getGridPanel().repaint();
-    }
-
-    // funzione per generare il labirinto casuale
-    private void handleRandomMaze(){
-        // cleanup totale
-        model.resetAllNodes();
-
-        // visito ogni nodo
-        for(int y=0; y<model.getHeight(); y++){
-            for(int x=0; x<model.getWidth(); x++){
-                Double randomNum = Math.random();
-                Node node = model.getNode(x, y);
-                // se minore di 0.3 wall, altrimenti empty
-                if (randomNum < 0.3) {
-                    if(node.getType() != NodeType.START && node.getType() != NodeType.END)
-                        model.getNode(x,y).setType(NodeType.WALL);
                 }
             }
         }
@@ -180,7 +155,8 @@ public class AppController implements MouseListener, MouseMotionListener, Action
         } else if (e.getSource() == view.getControlPanel().getEraseBtn()) {
             this.currentTool = ToolType.ERASER;
         } else if (e.getSource() == view.getControlPanel().getRandMaze()){
-            handleRandomMaze();
+            model.generateRandomMaze();
+            view.repaint();
         }
     }
 
@@ -220,20 +196,11 @@ public class AppController implements MouseListener, MouseMotionListener, Action
 
     private void placeStartOrEnd(MouseEvent e, Node node) {
         if (SwingUtilities.isLeftMouseButton(e)) {
-                // Gestione Start
-                if (this.startNode != null) {
-                    this.startNode.setType(NodeType.EMPTY); // Pulisci vecchio
-                }
-                node.setType(NodeType.START); // Setta nuovo
-                this.startNode = node;        // Aggiorna riferimento
-                
+                // cambio il nodo di start
+                model.setStartNode(node);
             } else if (SwingUtilities.isRightMouseButton(e)) {
-                // Gestione End
-                if (this.endNode != null) {
-                    this.endNode.setType(NodeType.EMPTY);
-                }
-                node.setType(NodeType.END);
-                this.endNode = node;
+                // cambio il nodo di end
+                model.setEndNode(node);
             }
     }
 

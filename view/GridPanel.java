@@ -3,7 +3,6 @@ package view;
 import model.*;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
@@ -18,18 +17,6 @@ public class GridPanel extends JPanel{
         this.setBackground(new Color(58, 63, 75));
         repaint(); 
     }
-
-    // @Override
-    // public Dimension getPreferredSize(){
-    //     if (grid == null) {
-    //         return new Dimension(800,600);
-    //     }
-
-    //     int width = grid.getWidth() * CELL_SIZE;
-    //     int height = grid.getHeight() * CELL_SIZE;
-    //     return new Dimension(width, height);
-    // }
-
     /**
      * Chiamato da Swing 
      */

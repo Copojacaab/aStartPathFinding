@@ -138,7 +138,9 @@ public class ControlPanel extends JPanel{
     public JButton getRandMaze() { return this.randMazeBtn; }
     public JSlider getHeuristicSlider() { return heuristicSlider; }
 
-    /**bottone personalizzato per proportional scaling */
+    /** 
+     * ------------------------ CLASSI SOVRASCRITTE ----------------------------
+     */
     private class ProportionalButton extends JButton implements MouseListener{
         private double ratio = 50.0 / 180.0;
 

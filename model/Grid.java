@@ -9,6 +9,8 @@ public class Grid {
     private int height;
     private Node[][] nodes;
 
+    private Node startNode;
+    private Node endNode;
     public Grid(int width, int height){
         this.width = width;
         this.height = height;
@@ -68,8 +70,50 @@ public class Grid {
                 nodes[y][x].resetFull();
             }
         }
+        this.startNode = null;
+        this.endNode = null;
+    }
+
+    /**generazione di un labirinto casuale (da imopstare con backtracing per soluzione sicura) */
+    public void generateRandomMaze(){
+                // cleanup totale
+        resetAllNodes();
+
+        // visito ogni nodo
+        for(int y=0; y<height; y++){
+            for(int x=0; x<width; x++){
+                Double randomNum = Math.random();
+                Node node = getNode(x, y);
+                // se minore di 0.3 wall, altrimenti empty
+                if (randomNum < 0.3) {
+                    if(node.getType() != NodeType.START && node.getType() != NodeType.END)
+                        getNode(x,y).setType(NodeType.WALL);
+                }
+            }
+        }
+        
+    }
+
+    // setters
+    public void setStartNode(Node newStart){
+        // check su quello vecchio
+        if(startNode != null)
+            startNode.setType(NodeType.EMPTY);
+        
+        newStart.setType(NodeType.START);
+        this.startNode = newStart;
+    }
+
+    public void setEndNode(Node newEnd){
+        if (endNode != null)
+            endNode.setType(NodeType.EMPTY);
+            
+        newEnd.setType(NodeType.END);
+        this.endNode = newEnd;
     }
     // Basic getters and setters
     public int getWidth() { return this.width; }
     public int getHeight() { return this.height; }
+    public Node getStartNode() { return this.startNode; }
+    public Node getEndNode() { return this.endNode; }
 }
