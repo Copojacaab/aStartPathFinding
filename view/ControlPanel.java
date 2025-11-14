@@ -153,7 +153,7 @@ public class ControlPanel extends JPanel{
         // colori
         private final Color INACTIVE_COLOR = new Color(80, 88, 104);
         private final Color HOVER_COLOR = new Color(70, 78, 94);
-        private final Color PRESSED_COLOR = new Color(70, 78, 94);
+        private final Color PRESSED_COLOR = new Color(60, 68, 84);
 
         public ProportionalButton(String text){
             super(text);
@@ -306,9 +306,21 @@ public class ControlPanel extends JPanel{
         @Override
         public void mouseClicked(MouseEvent e) {}
         @Override
-        public void mousePressed(MouseEvent e) {}
+        public void mousePressed(MouseEvent e) {
+            if (isSelected()) {
+                setBackground(HOVER_COLOR);
+            }
+        }
         @Override
-        public void mouseReleased(MouseEvent e) {}
+        public void mouseReleased(MouseEvent e) {
+            if(!isSelected()){
+                if(contains(e.getPoint())){
+                    setBackground(HOVER_COLOR);
+                } else{ 
+                    setBackground(INACTIVE_COLOR);
+                }
+            }
+        }
     }
 }
 
