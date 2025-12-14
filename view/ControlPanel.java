@@ -34,9 +34,8 @@ public class ControlPanel extends JPanel{
     private JButton randMazeBtn;
 
 
-
+    private static final Font BUTTON_FONT = new Font("Tahoma", Font.BOLD, 14);
     public ControlPanel(){
-        Font buttonFont = new Font("Tahoma", Font.BOLD, 20);
         // layout con contenitore
         this.setLayout(new BorderLayout());
         this.setBorder(new EmptyBorder(10,10,10,10)); //padding intorno al panel
@@ -48,13 +47,13 @@ public class ControlPanel extends JPanel{
         // init dei bottoni actions
         this.resetBtn = new ProportionalButton("Reset: 🔄");
         this.resetBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
-        this.resetBtn.setFont(buttonFont);
+        this.resetBtn.setFont(BUTTON_FONT);
         this.clearPathBtn = new ProportionalButton("Reset Path ❌");
         this.clearPathBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
-        this.clearPathBtn.setFont(buttonFont);
+        this.clearPathBtn.setFont(BUTTON_FONT);
         this.solveBtn = new ProportionalButton("Solve: ▶️");
         this.solveBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
-        this.solveBtn.setFont(buttonFont);
+        this.solveBtn.setFont(BUTTON_FONT);
 
         // this.eraseBtn = new ProportionalToggleButton("Erase: ✏️");
         // this.eraseBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -69,12 +68,12 @@ public class ControlPanel extends JPanel{
         // init slider euristica
         this.heuristicSlider = new JSlider();
         this.heuristicSlider.setAlignmentX(Component.LEFT_ALIGNMENT);
-        this.heuristicSlider.setFont(buttonFont);
+        this.heuristicSlider.setFont(BUTTON_FONT);
 
         // init randomizzatore labirinti
         this.randMazeBtn = new ProportionalButton("Random Maze: 🎲");
         this.randMazeBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
-        this.randMazeBtn.setFont(buttonFont);
+        this.randMazeBtn.setFont(BUTTON_FONT);
 
         // configurazione slider
         heuristicSlider.setMajorTickSpacing(10);
@@ -154,7 +153,7 @@ public class ControlPanel extends JPanel{
      * public per consentire accesso dalla ToolBarPanel in MainFrame
      */
     public class ProportionalButton extends JButton implements MouseListener{
-        private double ratio = 50.0 / 180.0;
+        private double ratio = 40.0 / 180.0;
 
         private int minWidth = 180;
         private int minHeight = (int) (minWidth * ratio);
@@ -238,7 +237,7 @@ public class ControlPanel extends JPanel{
     /**Classe per i pulsanti toggle usata principalmente dalla ToolBarPanel*/
     public class ProportionalToggleButton extends JToggleButton implements MouseListener{
 
-        private double ratio = 50.0 / 180.0;
+        private double ratio = 40.0 / 180.0;
 
         // dimensioni di default e massime
         private int minWidth = 180;
