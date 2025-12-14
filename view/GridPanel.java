@@ -29,17 +29,16 @@ public class GridPanel extends JPanel{
 
         int gridWidth = grid.getWidth();
         int gridHeight = grid.getHeight();
-
+        
+        DynamicDimension dims = getDynamicDimension();
+        int cellSize = dims.getCellSize();
+        int xOffset = dims.getXOffSet();
+        int yOffset = dims.getYOffset();
         // disegna ogni cella
         for(int y = 0; y < gridHeight; y++){
             for(int x = 0; x < gridWidth; x++){
                 NodeType nodeType = grid.genNodeType(x, y);
                 Color cellColor = getColorForType(nodeType);
-
-                DynamicDimension dims = getDynamicDimension();
-                int cellSize = dims.getCellSize();
-                int xOffset = dims.getXOffSet();
-                int yOffset = dims.getYOffset();
 
                 // calcolo le coordiante in px
                 int drawX = x * cellSize + xOffset;

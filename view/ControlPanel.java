@@ -17,19 +17,23 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
+
+/**
+ * pannello di controllo laterale che contiene i pulsanti di azione (reset, solve)
+ * e la configurazione (slider euristica, random maze)
+ */
 public class ControlPanel extends JPanel{
     
+    // pulsanti action
     private JButton resetBtn;
     private JButton clearPathBtn;
     private JButton solveBtn;
-
-    private JToggleButton eraseBtn;
-    private JToggleButton pointsBtn;
-    private JToggleButton wallBtn;
-
+    
+    // pulsanti configu
     private JSlider heuristicSlider;
-
     private JButton randMazeBtn;
+
+
 
     public ControlPanel(){
         Font buttonFont = new Font("Tahoma", Font.BOLD, 20);
@@ -41,7 +45,7 @@ public class ControlPanel extends JPanel{
         JPanel wrapperControl = new JPanel();
         wrapperControl.setLayout(new BoxLayout(wrapperControl, BoxLayout.Y_AXIS));
 
-        // init dei bottoni
+        // init dei bottoni actions
         this.resetBtn = new ProportionalButton("Reset: 🔄");
         this.resetBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
         this.resetBtn.setFont(buttonFont);
@@ -52,20 +56,22 @@ public class ControlPanel extends JPanel{
         this.solveBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
         this.solveBtn.setFont(buttonFont);
 
-        this.eraseBtn = new ProportionalToggleButton("Erase: ✏️");
-        this.eraseBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
-        this.eraseBtn.setFont(buttonFont);
-        this.pointsBtn = new ProportionalToggleButton("Start/End: 📍");
-        this.pointsBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
-        this.pointsBtn.setFont(buttonFont);
-        this.wallBtn = new ProportionalToggleButton("Walls: 🧱");
-        this.wallBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
-        this.wallBtn.setFont(buttonFont);
+        // this.eraseBtn = new ProportionalToggleButton("Erase: ✏️");
+        // this.eraseBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
+        // this.eraseBtn.setFont(buttonFont);
+        // this.pointsBtn = new ProportionalToggleButton("Start/End: 📍");
+        // this.pointsBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
+        // this.pointsBtn.setFont(buttonFont);
+        // this.wallBtn = new ProportionalToggleButton("Walls: 🧱");
+        // this.wallBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
+        // this.wallBtn.setFont(buttonFont);
 
+        // init slider euristica
         this.heuristicSlider = new JSlider();
         this.heuristicSlider.setAlignmentX(Component.LEFT_ALIGNMENT);
         this.heuristicSlider.setFont(buttonFont);
 
+        // init randomizzatore labirinti
         this.randMazeBtn = new ProportionalButton("Random Maze: 🎲");
         this.randMazeBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
         this.randMazeBtn.setFont(buttonFont);
@@ -75,73 +81,79 @@ public class ControlPanel extends JPanel{
         heuristicSlider.setPaintTicks(true);
         heuristicSlider.setPaintLabels(true);
 
+        // imposta l'altezza massima dello slider per non farlo espandere
         int sliderHeight = heuristicSlider.getPreferredSize().height;
         heuristicSlider.setMaximumSize(new Dimension(Integer.MAX_VALUE, sliderHeight));
         heuristicSlider.setBackground(new Color(59, 64, 74));
         heuristicSlider.setForeground(new Color(230, 230, 230));
         heuristicSlider.setOpaque(true);
         
-        // raggruppo i togglebtn
-        ButtonGroup toolGroup = new ButtonGroup();
-        toolGroup.add(wallBtn);
-        toolGroup.add(pointsBtn);
-        toolGroup.add(eraseBtn);
+        // // raggruppo i togglebtn
+        // ButtonGroup toolGroup = new ButtonGroup();
+        // toolGroup.add(wallBtn);
+        // toolGroup.add(pointsBtn);
+        // toolGroup.add(eraseBtn);
 
-        // add dei bottoni
+        // add dei bottoni al wrapper
         addButtons(wrapperControl);
-        // aggiungo le componenti al wrapper
 
         // aggiungo il wrapper al panel
         this.add(wrapperControl, BorderLayout.NORTH);
 
-        // colori
+        // style
         this.setBackground(new Color(59, 64, 74));
         wrapperControl.setBackground(new Color(59,64, 74));
-
         this.setMinimumSize(new Dimension(200,0));
     }
 
-    // --------------------------- HELPER ------------------
-        // Dimension buttonSize = new Dimension(180, 50);
-        // Dimension maxButtonSize = new Dimension(360, 100);
-
+    
+    /**
+     * HELPER per l'aggiunta dei pulsanti con vertical spacing
+     * @param wrapperControl: Jpanel contenitore
+     */
     private void addButtons(JPanel wrapperControl){
         int spacing = 10;
 
+        // sezione azioni principali
         wrapperControl.add(resetBtn);
-
         wrapperControl.add(Box.createVerticalStrut(spacing));
         wrapperControl.add(clearPathBtn);
         wrapperControl.add(Box.createVerticalStrut(spacing));
         wrapperControl.add(solveBtn);
         
-        wrapperControl.add(Box.createVerticalStrut(spacing));
-        wrapperControl.add(wallBtn);
-        wrapperControl.add(Box.createVerticalStrut(spacing));
-        wrapperControl.add(pointsBtn);
-        wrapperControl.add(Box.createVerticalStrut(spacing));
-        wrapperControl.add(eraseBtn);
+        // wrapperControl.add(Box.createVerticalStrut(spacing));
+        // wrapperControl.add(wallBtn);
+        // wrapperControl.add(Box.createVerticalStrut(spacing));
+        // wrapperControl.add(pointsBtn);
+        // wrapperControl.add(Box.createVerticalStrut(spacing));
+        // wrapperControl.add(eraseBtn);
 
-        wrapperControl.add(Box.createVerticalStrut(spacing));
+        wrapperControl.add(Box.createVerticalStrut(spacing * 2));
+
+        // sezione gen labirinto
         wrapperControl.add(randMazeBtn);
 
-        wrapperControl.add(Box.createVerticalStrut(spacing));
+        wrapperControl.add(Box.createVerticalStrut(spacing * 2));
+        
+        // sezione config euristica
         wrapperControl.add(heuristicSlider);
     }
-    // getter
+
+    // getters per il controller
     public JButton getResetBtn() { return this.resetBtn; }
     public JButton getClearPathBtn() { return this.clearPathBtn; }
     public JButton getSolveBtn() { return this.solveBtn; }
-    public JToggleButton getEraseBtn() { return this.eraseBtn; }
-    public JToggleButton getPointsBtn() { return this.pointsBtn; }
-    public JToggleButton getWallBtn() { return this.wallBtn; }
+    // public JToggleButton getEraseBtn() { return this.eraseBtn; }
+    // public JToggleButton getPointsBtn() { return this.pointsBtn; }
+    // public JToggleButton getWallBtn() { return this.wallBtn; }
     public JButton getRandMaze() { return this.randMazeBtn; }
     public JSlider getHeuristicSlider() { return heuristicSlider; }
 
     /** 
-     * ------------------------ CLASSI SOVRASCRITTE ----------------------------
+     * ------------------------ CLASSI INTERNE PER STILI ----------------------------
+     * public per consentire accesso dalla ToolBarPanel in MainFrame
      */
-    private class ProportionalButton extends JButton implements MouseListener{
+    public class ProportionalButton extends JButton implements MouseListener{
         private double ratio = 50.0 / 180.0;
 
         private int minWidth = 180;
@@ -168,8 +180,9 @@ public class ControlPanel extends JPanel{
             addMouseListener(this);
         }
 
+        // calcola la dimensione proporzionle in base alla larghezza del genitore
         private Dimension getProportionalSize(){
-            int width = getParent().getWidth();
+            int width = getParent() != null ? getParent().getWidth() : minWidth;
 
             if(width < minWidth){
                 return MIN_BUTTON_SIZE;
@@ -222,11 +235,12 @@ public class ControlPanel extends JPanel{
         }
     }
 
-    private class ProportionalToggleButton extends JToggleButton implements MouseListener{
+    /**Classe per i pulsanti toggle usata principalmente dalla ToolBarPanel*/
+    public class ProportionalToggleButton extends JToggleButton implements MouseListener{
 
         private double ratio = 50.0 / 180.0;
 
-        // dimensioni
+        // dimensioni di default e massime
         private int minWidth = 180;
         private int minHeight = (int) (minWidth * ratio);
         private final Dimension MIN_BUTTON_SIZE = new Dimension(minWidth, minHeight);
@@ -235,6 +249,7 @@ public class ControlPanel extends JPanel{
         private int maxHeight = (int) (maxWidth * ratio);
         private final Dimension MAX_TOGGLE_SIZE = new Dimension(maxWidth, maxHeight);
 
+        // colori per gli stati: inattivo, hover, attivo
         private final Color INACTIVE_COLOR = new Color(80, 88, 104);
         private final Color HOVER_COLOR = new Color(70, 78, 94);
         private final Color ACTIVE_COLOR = Color.yellow;
@@ -262,6 +277,7 @@ public class ControlPanel extends JPanel{
             });
         }
 
+        // calcola la dimensione in proporzione
         private Dimension getProportionalSize(){
             int width = getParent().getWidth();
 

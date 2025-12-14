@@ -49,10 +49,10 @@ public class AppController implements MouseListener, MouseMotionListener, Action
         view.getControlPanel().getResetBtn().addActionListener(this);
         view.getControlPanel().getClearPathBtn().addActionListener(this);
         view.getControlPanel().getSolveBtn().addActionListener(this);
-        // tools
-        view.getControlPanel().getWallBtn().addActionListener(this);
-        view.getControlPanel().getPointsBtn().addActionListener(this);
-        view.getControlPanel().getEraseBtn().addActionListener(this);
+        // TOOLBARPANEL
+        view.getToolBarPanel().getWallButton().addActionListener(this);
+        view.getToolBarPanel().getPointsButton().addActionListener(this);
+        view.getToolBarPanel().getEraseButton().addActionListener(this);
         // random maze
         view.getControlPanel().getRandMaze().addActionListener(this);
     }
@@ -149,11 +149,11 @@ public class AppController implements MouseListener, MouseMotionListener, Action
             // recupero il valore dello slider
             int sliderVal = view.getControlPanel().getHeuristicSlider().getValue();
             handleSolve(sliderVal/10.0);
-        } else if (e.getSource() == view.getControlPanel().getWallBtn()) {
+        } else if (e.getSource() == view.getToolBarPanel().getWallButton()) {
             this.currentTool = ToolType.DRAW_WALL;
-        } else if (e.getSource() == view.getControlPanel().getPointsBtn()) {
+        } else if (e.getSource() == view.getToolBarPanel().getPointsButton()) {
             this.currentTool = ToolType.SET_POINTS;
-        } else if (e.getSource() == view.getControlPanel().getEraseBtn()) {
+        } else if (e.getSource() == view.getToolBarPanel().getEraseButton()) {
             this.currentTool = ToolType.ERASER;
         } else if (e.getSource() == view.getControlPanel().getRandMaze()){
             model.generateRandomMaze();

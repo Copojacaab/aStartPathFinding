@@ -13,8 +13,8 @@ public class Main {
         SwingUtilities.invokeLater(() -> {
 
             // crea model
-            int largezza = 300;
-            int altezza = 210;
+            int largezza = 100;
+            int altezza = 100;
             Grid grid = new Grid(largezza, altezza);
 
             // -- TEST --
