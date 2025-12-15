@@ -6,11 +6,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.PriorityQueue;
 
-import model.*;
-import view.GridPanel;
 import javax.swing.SwingWorker;
 
 import model.Grid;
+import model.Node;
+import model.NodeType;
+import view.GridPanel;
 
 /**
  * Implementazione dell'algoritmo A* come SwingWorker.
@@ -53,7 +54,7 @@ public class AStarSolver extends SwingWorker<List<Node>, Node>{
         openList.add(startNode); 
 
         // Buffer per il repaint batch
-        ArrayList<Node> batch = new ArrayList();
+        ArrayList<Node> batch = new ArrayList<Node>();
         final int BATCH_SIZE = 10;
         
         // Ciclo A* principale

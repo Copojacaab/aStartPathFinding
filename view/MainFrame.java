@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -100,10 +99,11 @@ public class MainFrame extends JFrame{
             this.setBackground(new Color(59,64,74));
             this.setBorder(new EmptyBorder(5,10,5,10));
 
+            CustumButton cb = new CustumButton();
             // re-init dei toggle buttons: uso classe definita in ControlPanel
-            this.wallBtn = cp.new ProportionalToggleButton("Walls");
-            this.pointsBtn = cp.new ProportionalToggleButton("Start/End");
-            this.eraseBtn = cp.new ProportionalToggleButton("Erase");
+            this.wallBtn = cb.new ProportionalToggleButton("Walls");
+            this.pointsBtn = cb.new ProportionalToggleButton("Start/End");
+            this.eraseBtn = cb.new ProportionalToggleButton("Erase");
 
             // raggruppo i toggle in un ButtonGroup per la mutua esclusione
             ButtonGroup toolGroup = new ButtonGroup();

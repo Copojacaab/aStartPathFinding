@@ -5,9 +5,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.ItemEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.Hashtable;
 
 import javax.swing.Box;
@@ -16,10 +13,11 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
-import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import view.CustumButton.ProportionalButton;
 
 /**
  * Pannello di controllo laterale con azioni (Reset/Solve),
@@ -278,10 +276,4 @@ public class ControlPanel extends JPanel implements ChangeListener{
     public JButton getRandMaze() { return this.randMazeBtn; }
     public JSlider getHeuristicSlider() { return heuristicSlider; }
 
-    // ------------------------ CLASSI INTERNE PER STILI (Mantenute, omesse per brevità) ----------------------------
-    // Le classi ProportionalButton e ProportionalToggleButton sono invariate.
-    public class ProportionalButton extends JButton implements MouseListener{
-        private double ratio = 40.0 / 180.0; private int minWidth = 180; private final Dimension MIN_BUTTON_SIZE = new Dimension(minWidth, (int) (minWidth * ratio)); private int maxWidth = 500; private final Dimension MAX_BUTTON_SIZE = new Dimension(maxWidth, (int) (maxWidth * ratio)); private final Color INACTIVE_COLOR = new Color(80, 88, 104); private final Color HOVER_COLOR = new Color(70, 78, 94); private final Color PRESSED_COLOR = new Color(60, 68, 84); public ProportionalButton(String text){ super(text); setBackground(INACTIVE_COLOR); setForeground(new Color(230, 230, 230)); setOpaque(true); setBorderPainted(false); addMouseListener(this); } private Dimension getProportionalSize(){ int width = getParent() != null ? getParent().getWidth() : minWidth; if(width < minWidth){ return MIN_BUTTON_SIZE; }else if (width > maxWidth) { return MAX_BUTTON_SIZE; } else { int height = (int) (width * ratio); return new Dimension(width, height); } } @Override public Dimension getPreferredSize() { int width = getParent() != null ? getParent().getWidth() : minWidth; int height = (int) (width * ratio); return new Dimension(width, height); } @Override public Dimension getMaximumSize() { int width = getParent() != null ? getParent().getWidth() : minWidth; int height = (int) (width * ratio); return new Dimension(width, height); } @Override public void mouseEntered(MouseEvent e) { setBackground(HOVER_COLOR); } @Override public void mouseExited(MouseEvent e) { setBackground(INACTIVE_COLOR); } @Override public void mousePressed(MouseEvent e) { setBackground(PRESSED_COLOR); } @Override public void mouseClicked(MouseEvent e) {} @Override public void mouseReleased(MouseEvent e) { if (contains(e.getPoint())) { setBackground(HOVER_COLOR); } else { setBackground(INACTIVE_COLOR); } } }
-    public class ProportionalToggleButton extends JToggleButton implements MouseListener{
-        private double ratio = 40.0 / 180.0; private int minWidth = 180; private int minHeight = (int) (minWidth * ratio); private final Dimension MIN_BUTTON_SIZE = new Dimension(minWidth, minHeight); private int maxWidth = 500; private int maxHeight = (int) (maxWidth * ratio); private final Dimension MAX_TOGGLE_SIZE = new Dimension(maxWidth, maxHeight); private final Color INACTIVE_COLOR = new Color(80, 88, 104); private final Color HOVER_COLOR = new Color(70, 78, 94); private final Color ACTIVE_COLOR = Color.yellow; private final Color TEXT_INACTIVE_COLOR = new Color(230, 230, 230); private final Color TEXT_ACTIVE_COLOR = Color.BLACK; public ProportionalToggleButton(String text){ super(text); this.setFont(BUTTON_FONT); setBackground(INACTIVE_COLOR); setForeground(TEXT_INACTIVE_COLOR); setOpaque(true); setBorderPainted(false); this.addMouseListener(this); this.addItemListener(e -> { if(e.getStateChange() == ItemEvent.SELECTED) { setBackground(ACTIVE_COLOR); setForeground(TEXT_ACTIVE_COLOR); } else if (e.getStateChange() == ItemEvent.DESELECTED){ setBackground(INACTIVE_COLOR); setForeground(TEXT_INACTIVE_COLOR); } }); } private Dimension getProportionalSize(){ int width = getParent() != null ? getParent().getWidth() : minWidth; if (width < minWidth){ return MIN_BUTTON_SIZE; } else if (width > maxWidth) { return MAX_TOGGLE_SIZE; } else { int height = (int) (width * ratio); return new Dimension(width, height); } } @Override public Dimension getPreferredSize() { return getProportionalSize(); } @Override public Dimension getMaximumSize() { return getProportionalSize(); } @Override public void mouseEntered(MouseEvent e) { if(!isSelected()){ setBackground(HOVER_COLOR); } } @Override public void mouseExited(MouseEvent e) { if(!isSelected()){ setBackground(INACTIVE_COLOR); } } @Override public void mouseClicked(MouseEvent e) {} @Override public void mousePressed(MouseEvent e) { if (isSelected()) { setBackground(HOVER_COLOR); } } @Override public void mouseReleased(MouseEvent e) { if(!isSelected()){ if(contains(e.getPoint())){ setBackground(HOVER_COLOR); } else{ setBackground(INACTIVE_COLOR); } } } }
 }
