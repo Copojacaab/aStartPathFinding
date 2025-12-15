@@ -73,6 +73,6 @@ public class ToolBarPanel extends JPanel{
 
     // getters per il controller pe agganciare i listener
     public JToggleButton getWallButton() { return this.wallBtn; }
-    public JToggleButton getEraButton() { return this.eraseBtn; }
+    public JToggleButton getEraseButton() { return this.eraseBtn; }
     public JToggleButton getPointsButton() { return this.pointsBtn; }
 }

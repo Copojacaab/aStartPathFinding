@@ -1,20 +1,10 @@
 package view;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JToggleButton;
-import javax.swing.border.EmptyBorder;
-
-import view.CustumButton.ProportionalToggleButton;
 
 
 /** finestra principale dell'applicazione, funge da view nel pattern MVC*/
@@ -50,7 +40,7 @@ public class MainFrame extends JFrame{
         // 3. inizilalizza i componenti principalis
         this.gridPanel = new GridPanel();
         this.controlPanel = new ControlPanel();
-        this.toolBarPanel = new ToolBarPanel(this.controlPanel); // passo istanza di controlPanel per accedere a proportionalToggle
+        this.toolBarPanel = new ToolBarPanel(); // passo istanza di controlPanel per accedere a proportionalToggle
         
         // --- Regole per la ToolBarPanel (riga 0) ---
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -86,68 +76,5 @@ public class MainFrame extends JFrame{
     public ToolBarPanel getToolBarPanel() { return this.toolBarPanel; }
 
     /** CLASSE INTERNA: implementa la barra degli strumenti orizzonalte per la tool selection*/
-    public class ToolBarPanel extends JPanel{
-        private JToggleButton eraseBtn;
-        private JToggleButton pointsBtn;
-        private JToggleButton wallBtn;
 
-        /**Costruttore: richiede istanza di control panel per creare i toggle
-         * usando la clase interna ProportionalToggleButton
-         * @param cp: istanza di ControlPanel
-         */
-        public ToolBarPanel(ControlPanel cp){
-            // configurazione layout: boxlayout orizzontale
-            this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-            this.setBackground(new Color(59,64,74));
-            this.setBorder(new EmptyBorder(5,10,5,10));
-
-            
-            // re-init dei toggle buttons: uso classe definita in ControlPanel
-            this.wallBtn = new ProportionalToggleButton("Walls");
-            this.pointsBtn = new ProportionalToggleButton("Start/End");
-            this.eraseBtn = new ProportionalToggleButton("Erase");
-
-            // raggruppo i toggle in un ButtonGroup per la mutua esclusione
-            ButtonGroup toolGroup = new ButtonGroup();
-            toolGroup.add(eraseBtn);
-            toolGroup.add(pointsBtn);
-            toolGroup.add(wallBtn);
-
-            // aggiungo i bottoni al panel con spazio elastico
-            this.add(Box.createHorizontalGlue()); //spazio elastico a sx
-            this.add(wallBtn);
-            this.add(Box.createHorizontalStrut(20));
-            this.add(pointsBtn);
-            this.add(Box.createHorizontalStrut(20));
-            this.add(eraseBtn);
-            this.add(Box.createHorizontalGlue()); //spazio elastico a dx
-
-            // default: wall attivo
-            wallBtn.setSelected(true);
-
-            // aggiorno stile pulsanti
-            Font buttonFont = new Font("Tahoma", Font.BOLD, 16);
-            int minHeight = 40;
-            int minWidth = 150;
-            Dimension toolSize = new Dimension(minWidth, minHeight);
-
-            // applico nuove dim e font
-            wallBtn.setFont(buttonFont);
-            wallBtn.setPreferredSize(toolSize);
-            wallBtn.setMaximumSize(toolSize);
-            
-            eraseBtn.setFont(buttonFont);
-            eraseBtn.setPreferredSize(toolSize);
-            eraseBtn.setMaximumSize(toolSize);
-
-            pointsBtn.setFont(buttonFont);
-            pointsBtn.setPreferredSize(toolSize);
-            pointsBtn.setMaximumSize(toolSize);
-        }
-
-        // getters per il controller per agganciare i listeners
-        public JToggleButton getWallButton() { return this.wallBtn; }
-        public JToggleButton getEraseButton() { return this.eraseBtn; }
-        public JToggleButton getPointsButton() { return this.pointsBtn; }
-    }
 }
