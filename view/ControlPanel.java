@@ -131,7 +131,7 @@ public class ControlPanel extends JPanel implements ChangeListener{
 
         int sliderHeight = heuristicSlider.getPreferredSize().height;
         heuristicSlider.setMaximumSize(new Dimension(Integer.MAX_VALUE, sliderHeight));
-        heuristicSlider.setBackground(new Color(59, 64, 74));
+        heuristicSlider.setBackground(new Color(51, 55, 64));
         heuristicSlider.setForeground(new Color(230, 230, 230));
         heuristicSlider.setOpaque(true);
         
@@ -145,8 +145,8 @@ public class ControlPanel extends JPanel implements ChangeListener{
         this.add(wrapperControl, BorderLayout.NORTH);
 
         // Stile generale
-        this.setBackground(new Color(59, 64, 74));
-        wrapperControl.setBackground(new Color(59,64, 74));
+        this.setBackground(new Color(51, 55, 64));
+        wrapperControl.setBackground(new Color(51, 55, 64));
         this.setMinimumSize(new Dimension(200,0));
         
         // Assicura che i risultati siano resettati all'avvio
@@ -220,7 +220,7 @@ public class ControlPanel extends JPanel implements ChangeListener{
         // Sezione 3: Configurazione Euristica
         JPanel heuristicLabelWrapper = new JPanel();
         heuristicLabelWrapper.setLayout(new BoxLayout(heuristicLabelWrapper, BoxLayout.X_AXIS));
-        heuristicLabelWrapper.setBackground(new Color(59, 64, 74));
+        heuristicLabelWrapper.setBackground(new Color(51, 55, 64));
         heuristicLabelWrapper.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         heuristicLabelWrapper.add(heuristicLabel);      
@@ -241,7 +241,7 @@ public class ControlPanel extends JPanel implements ChangeListener{
     private JPanel createResultsPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(new Color(59, 64, 74)); 
+        panel.setBackground(new Color(51, 55, 64)); 
         panel.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         // Costo Totale

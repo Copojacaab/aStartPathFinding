@@ -26,7 +26,7 @@ public class ToolBarPanel extends JPanel{
     public ToolBarPanel(){
         // configurazione layout
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-        this.setBackground(new Color(59, 64, 74));
+        this.setBackground(new Color(51, 55, 64));
         this.setBorder(new EmptyBorder(5, 10, 5, 10));
 
         // re-init dei toggle

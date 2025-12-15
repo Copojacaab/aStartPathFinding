@@ -18,8 +18,8 @@ public class CustumButton {
 
     // colori di base
     private static final Color INACTIVE_COLOR = new Color(80, 88, 104);
-    private static final Color HOVER_COLOR = new Color(70, 78, 94);
-    private static final Color PRESSED_COLOR = new Color(60, 68, 84);
+    private static final Color HOVER_COLOR = new Color(96, 106, 124);
+    private static final Color PRESSED_COLOR = new Color(64, 72, 88);
     private static final Color ACTIVE_COLOR = Color.yellow;
     private static final Color TEXT_INACTIVE_COLOR = new Color(230, 230, 230);
     private static final Color TEXT_ACTIVE_COLOR = Color.BLACK;
