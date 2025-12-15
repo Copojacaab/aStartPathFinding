@@ -1,5 +1,10 @@
 package controller;
 
+import java.awt.Cursor;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 /**
  * Controller principale: gestisce gli eventi dell'utente (mouse, bottoni)
  * e coordina la logica tra la Grid (Model) e la MainFrame (View).
@@ -7,19 +12,18 @@ package controller;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
-
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import model.Grid;
 import model.Node;
@@ -33,10 +37,18 @@ public class AppController implements MouseListener, MouseMotionListener, Action
 
     private ToolType currentTool;
 
+    // campi per cursori personalizzati
+    private Cursor eraseCursor;
+    private Cursor wallCursor;
+    private Cursor pointCursor;
+
     public AppController(Grid model, MainFrame view, ToolType currentTool) {
         this.model = model;
         this.view = view;
         this.currentTool = currentTool;
+
+        loadCustumCursors();
+        updateCursor(currentTool);
     }
 
     /** Aggancia tutti i listener ai componenti della view (Grid e Control Panel). */
@@ -55,6 +67,48 @@ public class AppController implements MouseListener, MouseMotionListener, Action
         view.getToolBarPanel().getWallButton().addActionListener(this);
         view.getToolBarPanel().getPointsButton().addActionListener(this);
         view.getToolBarPanel().getEraseButton().addActionListener(this);
+    }
+
+    /**carica le immagini e crea i cursori personalizzati */
+    private void loadCustumCursors(){
+        // hotspot in alto a sinistra
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Point hotspotEraser = new Point(0,30);
+        Point hotspotCenter = new Point(22, 22);
+        Point hotspotWall = new Point(0, 32);
+
+        // 1. cursore per eraser (fallback freccia standard)
+        this.eraseCursor = createCursor("eraser.png", "Eraser", hotspotEraser, toolkit , Cursor.DEFAULT_CURSOR);
+        
+        // 2. cursore per draw walls (fallback mano)
+        this.wallCursor = createCursor("wall_tool.png", "WallTool", hotspotWall, toolkit, Cursor.HAND_CURSOR);
+
+        // 3. cursore per star/end (fallback crosshair)
+        this.pointCursor = createCursor("point_tool.png", "PointTool", hotspotCenter, toolkit, Cursor.CROSSHAIR_CURSOR);
+    }
+
+    /** aggiorna il cursore del gridpanel in base al tooltype attivo
+     */
+    private void updateCursor(ToolType tool){
+        Cursor newCursor = Cursor.getDefaultCursor();
+
+        switch (tool) {
+            case SET_POINTS:
+                newCursor = (pointCursor != null) ? pointCursor : Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
+                break;
+            case DRAW_WALL:
+                newCursor = (wallCursor != null) ? wallCursor : Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+                break;
+            case ERASER:
+                newCursor = (eraseCursor != null) ? eraseCursor : Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+                break;
+            default:
+                newCursor = Cursor.getDefaultCursor();
+                break;
+        }
+        view.getGridPanel().setCursor(newCursor);
+
+        view.getGridPanel().repaint();
     }
 
     /** Avvia la risoluzione A* in background. */
@@ -161,10 +215,13 @@ public class AppController implements MouseListener, MouseMotionListener, Action
         // Gestione cambio Tool (dalla ToolBar)
         else if (source == view.getToolBarPanel().getWallButton()) {
             this.currentTool = ToolType.DRAW_WALL;
+            updateCursor(currentTool);
         } else if (source == view.getToolBarPanel().getPointsButton()) {
             this.currentTool = ToolType.SET_POINTS;
+            updateCursor(currentTool);
         } else if (source == view.getToolBarPanel().getEraseButton()) {
             this.currentTool = ToolType.ERASER;
+            updateCursor(currentTool);
         }
     }
 
@@ -219,6 +276,28 @@ public class AppController implements MouseListener, MouseMotionListener, Action
         }
     }
 
+    /** HELPER: carica un'immagine come risorsa e crea un cursore */
+    private Cursor createCursor(String filename, String cursorName, Point hotspot, Toolkit toolkit, int fallback){
+        try {
+            URL url = getClass().getResource("../resources/cursors/" + filename);
+            if(url == null){
+                System.err.println("Errore: risorsa cursore non trovata");
+                return Cursor.getPredefinedCursor(fallback);
+            }
+
+            // carica immagine
+            BufferedImage img = ImageIO.read(url);
+
+            return toolkit.createCustomCursor(img, hotspot, cursorName);
+
+        } catch (IOException e){
+            System.err.println("Errore I/O durante il caricamento dell cursore");
+            return Cursor.getPredefinedCursor(fallback);
+        } catch (Exception e){
+            System.err.println("Errore generico durante la creazione del cursore");
+            return Cursor.getPredefinedCursor(fallback);
+        }
+    }
     @Override public void mouseMoved(MouseEvent e) {}
     @Override public void mousePressed(MouseEvent e) {}
     @Override public void mouseReleased(MouseEvent e) {}
