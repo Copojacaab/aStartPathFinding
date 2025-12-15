@@ -99,7 +99,7 @@ public class CustumButton {
         }
     }
 
-    public class ProportionalToggleButton extends JToggleButton implements MouseListener {
+    public static class ProportionalToggleButton extends JToggleButton implements MouseListener {
         private double ratio = 40.0 / 180.0;
         private int minWidth = 180;
         private int maxWidth = 500;

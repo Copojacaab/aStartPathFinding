@@ -11,6 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
 
+import view.CustumButton.ProportionalToggleButton;
+
 /**
  * pannello che implementa la barra degli strumenti
  */
@@ -27,12 +29,10 @@ public class ToolBarPanel extends JPanel{
         this.setBackground(new Color(59, 64, 74));
         this.setBorder(new EmptyBorder(5, 10, 5, 10));
 
-        CustumButton cb = new CustumButton();
-
         // re-init dei toggle
-        this.wallBtn = cb.new ProportionalToggleButton("Walls");
-        this.eraseBtn = cb.new ProportionalToggleButton("Erase");
-        this.pointsBtn = cb.new ProportionalToggleButton("Start/End");
+        this.wallBtn = new ProportionalToggleButton("Walls");
+        this.eraseBtn = new ProportionalToggleButton("Erase");
+        this.pointsBtn = new ProportionalToggleButton("Start/End");
 
         // raggruppo i toggle in un buttongruoup per mutua esclusione
         ButtonGroup toolGroup = new ButtonGroup();

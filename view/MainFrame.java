@@ -14,6 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
 
+import view.CustumButton.ProportionalToggleButton;
+
 
 /** finestra principale dell'applicazione, funge da view nel pattern MVC*/
 public class MainFrame extends JFrame{
@@ -99,11 +101,11 @@ public class MainFrame extends JFrame{
             this.setBackground(new Color(59,64,74));
             this.setBorder(new EmptyBorder(5,10,5,10));
 
-            CustumButton cb = new CustumButton();
+            
             // re-init dei toggle buttons: uso classe definita in ControlPanel
-            this.wallBtn = cb.new ProportionalToggleButton("Walls");
-            this.pointsBtn = cb.new ProportionalToggleButton("Start/End");
-            this.eraseBtn = cb.new ProportionalToggleButton("Erase");
+            this.wallBtn = new ProportionalToggleButton("Walls");
+            this.pointsBtn = new ProportionalToggleButton("Start/End");
+            this.eraseBtn = new ProportionalToggleButton("Erase");
 
             // raggruppo i toggle in un ButtonGroup per la mutua esclusione
             ButtonGroup toolGroup = new ButtonGroup();
