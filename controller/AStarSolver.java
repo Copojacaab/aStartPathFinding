@@ -29,7 +29,7 @@ public class AStarSolver extends SwingWorker<List<Node>, Node>{
     private PriorityQueue<Node> openList;
     private HashSet<Node> closedList;
     
-    // Contatore per i nodi esaminati (Closed List Size)
+    // counter per i nodi esaminati (closed list size)
     private int exploredCount;
 
     public AStarSolver(Grid grid, Node start, Node end, GridPanel gridPanel, Double heuristicWeight){
@@ -42,28 +42,28 @@ public class AStarSolver extends SwingWorker<List<Node>, Node>{
 
     @Override
     protected List<Node> doInBackground() throws Exception {
-        // Init delle strutture dati
+        // init delle strutture dati
         openList = new PriorityQueue<>((node1, node2) -> Double.compare(node1.getFCost(), node2.getFCost()));
         closedList = new HashSet<>();
         
-        // Setup del nodo di partenza
+        // setup del nodo di partenza
         startNode.setGCost(0);
         startNode.setHCost(calcHeuristic(startNode, endNode, this.heuristicWeight));
         startNode.setFCost(startNode.getHCost());
         
         openList.add(startNode); 
 
-        // Buffer per il repaint batch
+        // buffer per il repaint batch
         ArrayList<Node> batch = new ArrayList<Node>();
         final int BATCH_SIZE = 10;
         
-        // Ciclo A* principale
+        // loop A* principale
         while (!openList.isEmpty()) {
             sleep(5); // rallenta per la visualizzazione
             Node currentNode = openList.poll(); 
             closedList.add(currentNode); 
             
-            // Aggiorna lo stato per il visualizer
+            // aggiorna lo stato per il visualizer
             if(currentNode.getType() != NodeType.START && currentNode.getType() != NodeType.END){
                 currentNode.setType(NodeType.CLOSED);
                 batch.add(currentNode);
@@ -73,27 +73,27 @@ public class AStarSolver extends SwingWorker<List<Node>, Node>{
                 }
             }
             
-            // Condizione di uscita: destinazione raggiunta
+            // out condition: destinazione trovata
             if (currentNode == endNode) {
                 if (!batch.isEmpty()) {
                     publish(batch.toArray(new Node[0]));
                 }
-                this.exploredCount = closedList.size(); // Salva il risultato
+                this.exploredCount = closedList.size(); // salva risultato
                 return reconstructPath(endNode);
             }
             
-            // Esamina i vicini
+            // esamina vicini
             for (Node neighbor : grid.getNeighbors(currentNode)) {
                 sleep(2);
                 if (closedList.contains(neighbor)) {
                     continue;
                 }
                 
-                // G-Cost provvisorio (costo di 1 per mossa ortogonale)
+                // g-Cost provvisorio (costo di 1 per mossa)
                 double tentativeGCost = currentNode.getGCost() + 1;
                 
                 if (tentativeGCost < neighbor.getGCost()) { 
-                    // Trovato percorso migliore. Aggiorna i costi.
+                    // trovato percorso migliore. update dei costi
                     neighbor.setParentNode(currentNode); 
                     neighbor.setGCost(tentativeGCost);
                     neighbor.setHCost(calcHeuristic(neighbor, endNode, this.heuristicWeight));
@@ -102,7 +102,7 @@ public class AStarSolver extends SwingWorker<List<Node>, Node>{
                     if(!openList.contains(neighbor))
                         openList.add(neighbor); 
                         
-                    // Aggiorna lo stato del nodo per la visualizzazione
+                    // aggiorna lo stato del nodo per la visualizzazione
                     if(neighbor.getType() == NodeType.EMPTY){
                         neighbor.setType(NodeType.OPEN);
                         batch.add(neighbor); 
@@ -111,16 +111,16 @@ public class AStarSolver extends SwingWorker<List<Node>, Node>{
             }
         }
         
-        // Pubblica l'ultimo batch se necessario
+        // pubblica l'ultimo batch se serve
         if(!batch.isEmpty()){
             publish(batch.toArray(new Node[0]));
         }
         
-        this.exploredCount = closedList.size(); // Salva il risultato anche in caso di fallimento
-        return null; // Percorso non trovato
+        this.exploredCount = closedList.size(); // salva il risultato anche in caso di fallimento
+        return null; // percorso non trovato
     }
 
-    /** Ordina il repaint al GridPanel in base ai chunk pubblicati. */
+    /** prdina il repaint al gridpanel in base ai chunk pubblicati */
     @Override
     protected void process(List<Node> chunks){
         this.gridPanel.repaint();
@@ -128,13 +128,13 @@ public class AStarSolver extends SwingWorker<List<Node>, Node>{
     
     // ---------------- HELPER -------------
     
-    /** Calcola la distanza di Manhattan pesata. */
+    /** calcola la distanza di Manhattan pesata */
     private double calcHeuristic(Node from, Node to, Double heuristicWeight){
         return (Math.abs(to.getX() - from.getX()) + 
                 Math.abs(to.getY() - from.getY())) * heuristicWeight;
     }
 
-    /** Ricostruisce il percorso finale risalendo i nodi parent. */
+    /** ticostruisce il percorso finale risalendo i parent */
     private List<Node> reconstructPath(Node endNode){
         List<Node> path = new ArrayList<>();
         Node current = endNode;
@@ -143,21 +143,21 @@ public class AStarSolver extends SwingWorker<List<Node>, Node>{
             path.add(current);
             current = current.getParentNode();
         }
-        Collections.reverse(path); // Inverte la lista per andare da Start a End
+        Collections.reverse(path); // inverte la lista per andare da start a end
         return path;
     }
 
-    /** Introduce un piccolo ritardo per rendere visibile l'algoritmo. */
+    /** ritardo per rendere visibile l'algritmo */
     private void sleep(int ms){
         try{
             Thread.sleep(ms);
         } catch (InterruptedException ex){
-            // Non bloccare il thread in caso di interruzione
+            // non bloccare il thread in caso di interruzione
             Thread.currentThread().interrupt();
         }
     }
     
-    /** Ritorna il numero di nodi esplorati (dimensione della Closed List). */
+    /** ritorna il numero di nodi esplorati (dimensione closed list). */
     public int getExploredCount() {
         return exploredCount;
     }

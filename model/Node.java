@@ -21,7 +21,7 @@ public class Node {
     }
 
     /**
-     * Resetta costi e stato dell'algoritmo
+     * Resetta coscti e stato dell'algoritmo
      * non tocca il tipo (muro, partenza, fine)
      */
     public void resetCosts(){

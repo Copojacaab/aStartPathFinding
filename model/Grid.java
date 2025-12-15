@@ -168,7 +168,7 @@ public class Grid {
         getNode(wallX, wallY).setType(NodeType.EMPTY);
     }
 
-    // Basic getters and setters
+    // basic getters and setters
     public int getWidth() { return this.width; }
     public int getHeight() { return this.height; }
     public Node getStartNode() { return this.startNode; }

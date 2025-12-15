@@ -30,9 +30,9 @@ public class ToolBarPanel extends JPanel{
         this.setBorder(new EmptyBorder(5, 10, 5, 10));
 
         // re-init dei toggle
-        this.wallBtn = new ProportionalToggleButton("Walls");
-        this.eraseBtn = new ProportionalToggleButton("Erase");
-        this.pointsBtn = new ProportionalToggleButton("Start/End");
+        this.wallBtn = new ProportionalToggleButton("■ Walls");
+        this.eraseBtn = new ProportionalToggleButton("Ø Erase");
+        this.pointsBtn = new ProportionalToggleButton("♦ Start/End");
 
         // raggruppo i toggle in un buttongruoup per mutua esclusione
         ButtonGroup toolGroup = new ButtonGroup();

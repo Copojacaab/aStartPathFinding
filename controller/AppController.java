@@ -5,10 +5,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-/**
- * Controller principale: gestisce gli eventi dell'utente (mouse, bottoni)
- * e coordina la logica tra la Grid (Model) e la MainFrame (View).
- */
+
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -30,6 +27,9 @@ import model.Node;
 import model.NodeType;
 import view.MainFrame;
 
+/**
+ * Controller principale
+ */
 public class AppController implements MouseListener, MouseMotionListener, ActionListener {
 
     Grid model;
@@ -51,19 +51,19 @@ public class AppController implements MouseListener, MouseMotionListener, Action
         updateCursor(currentTool);
     }
 
-    /** Aggancia tutti i listener ai componenti della view (Grid e Control Panel). */
+    /** agganvia tutti i listener ai componenti della view (Grid e Control Panel) */
     public void initController() {
-        // Listener per la Grid (disegno, posizionamento)
+        // listener per la Grid (disegno, posizionamento)
         view.getGridPanel().addMouseMotionListener(this);
         view.getGridPanel().addMouseListener(this);
         
-        // Listener per i bottoni di Azione
+        // listener per i bottoni di action
         view.getControlPanel().getResetBtn().addActionListener(this);
         view.getControlPanel().getClearPathBtn().addActionListener(this);
         view.getControlPanel().getSolveBtn().addActionListener(this);
         view.getControlPanel().getRandMaze().addActionListener(this);
 
-        // Listener per i Tool (dalla ToolBarPanel)
+        // listener per tool (dalla ToolBarPanel)
         view.getToolBarPanel().getWallButton().addActionListener(this);
         view.getToolBarPanel().getPointsButton().addActionListener(this);
         view.getToolBarPanel().getEraseButton().addActionListener(this);
@@ -111,20 +111,20 @@ public class AppController implements MouseListener, MouseMotionListener, Action
         view.getGridPanel().repaint();
     }
 
-    /** Avvia la risoluzione A* in background. */
+    /** avvia la risoluzione A* in background*/
     private void handleSolve(Double heuristicWeight) {
         if (model.getStartNode() == null || model.getEndNode() == null) {
             JOptionPane.showMessageDialog(view, "Seleziona i nodi Start e End.", "Errore di input", JOptionPane.ERROR_MESSAGE);
             return;
         }
         
-        view.getControlPanel().resetResults(); // Pulisci i risultati precedenti
+        view.getControlPanel().resetResults(); // pulisci i risultati precedenti
         model.resetAlgorithmState(); // Pulisci lo stato della griglia (OPEN/CLOSED/PATH)
 
         AStarSolver solver = new AStarSolver(this.model, model.getStartNode(), model.getEndNode(), this.view.getGridPanel(),
                 heuristicWeight);
 
-        // Listener per catturare il risultato al termine dell'esecuzione
+        // listener per catturare il risultato al termine dell'esecuzione
         solver.addPropertyChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent event) {
@@ -138,7 +138,7 @@ public class AppController implements MouseListener, MouseMotionListener, Action
         solver.execute();
     }
 
-    /** Gestisce il risultato finale del Solver. */
+    /** gestisce il risultato finale del Solver */
     private void handleSolverDone(AStarSolver solver) {
         List<Node> path;
         double finalPathCost = Double.POSITIVE_INFINITY;
@@ -146,7 +146,7 @@ public class AppController implements MouseListener, MouseMotionListener, Action
         
         try {
             path = solver.get();
-            exploredNodesCount = solver.getExploredCount(); // Prende il conteggio dei nodi esaminati
+            exploredNodesCount = solver.getExploredCount(); // prende il counter dei nodi esaminati
 
             if (path != null && !path.isEmpty()) {
                 // Percorso trovato
@@ -160,27 +160,27 @@ public class AppController implements MouseListener, MouseMotionListener, Action
                     }
                 }
             } else {
-                // Percorso non trovato
+                // percorso non trovato
                 JOptionPane.showMessageDialog(view, "Nessun percorso trovato", "Warning", JOptionPane.WARNING_MESSAGE);
             }
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(view, "Errore nell'esecuzione dell'algoritmo", "Errore Solver", JOptionPane.ERROR_MESSAGE);
         } finally {
-            // Aggiorna la UI con le metriche finali (costo e nodi esplorati)
+            // update UI con le metriche finali (costo e nodi esplorati)
             view.getControlPanel().updateResults(finalPathCost, exploredNodesCount); 
             view.getGridPanel().repaint();
         }
     }
 
-    /** Resetta completamente la griglia e i risultati. */
+    /** resetta totale griglia e risultati */
     private void handleReset() {
         model.resetAllNodes(); 
         view.getGridPanel().repaint();
         view.getControlPanel().resetResults(); 
     }
 
-    /** Pulisce solo lo stato dell'algoritmo (PATH, OPEN, CLOSED). */
+    /** cleanup stato dell'algoritmo (PATH, OPEN, CLOSED */
     private void handleClearPath(){
         model.resetAlgorithmState();
         for(int y=0; y<model.getHeight(); y++){
@@ -195,7 +195,7 @@ public class AppController implements MouseListener, MouseMotionListener, Action
         view.getControlPanel().resetResults(); 
     }
 
-    /** Gestione generale degli eventi dei bottoni. */
+    /** gestione generale degli button eventss */
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
@@ -208,11 +208,11 @@ public class AppController implements MouseListener, MouseMotionListener, Action
             int sliderVal = view.getControlPanel().getHeuristicSlider().getValue();
             handleSolve(sliderVal/10.0);
         } else if (source == view.getControlPanel().getRandMaze()){
-            handleClearPath(); // Pulisci prima di generare
+            handleClearPath(); // pulisci prima di generare
             model.generateRandomMaze();
             view.repaint();
         } 
-        // Gestione cambio Tool (dalla ToolBar)
+        // gestione cambio Tool (dalla ToolBar)
         else if (source == view.getToolBarPanel().getWallButton()) {
             this.currentTool = ToolType.DRAW_WALL;
             updateCursor(currentTool);
@@ -225,7 +225,7 @@ public class AppController implements MouseListener, MouseMotionListener, Action
         }
     }
 
-    /** Gestisce il disegno (Drag del mouse). */
+    /** gestisce il disegno (drag mouse) */
     @Override
     public void mouseDragged(MouseEvent e) {
         Point nodeCoord = view.getGridPanel().getNodeAt(e.getX(), e.getY());
@@ -237,7 +237,7 @@ public class AppController implements MouseListener, MouseMotionListener, Action
             return;
         }
         
-        // Disegna muro o cancella
+        // disegna muro o cancella
         if (currentTool == ToolType.DRAW_WALL) {
             node.setType(NodeType.WALL);
         } else if (currentTool == ToolType.ERASER) {
@@ -247,7 +247,7 @@ public class AppController implements MouseListener, MouseMotionListener, Action
         view.getGridPanel().repaint();
     }
 
-    /** Gestisce il click del mouse (Posizionamento Start/End, Cancellazione). */
+    /** gestisce il click del mouse (start/end o cancel). */
     @Override
     public void mouseClicked(MouseEvent e) {
         Point nodeCoord = view.getGridPanel().getNodeAt(e.getX(), e.getY());
@@ -267,7 +267,7 @@ public class AppController implements MouseListener, MouseMotionListener, Action
         view.getGridPanel().repaint();
     }
 
-    /** Logica per posizionare Start (Sinistro) o End (Destro). */
+    /** logica per posizionare start (mouse sx) o end (mouse dx). */
     private void placeStartOrEnd(MouseEvent e, Node node) {
         if (SwingUtilities.isLeftMouseButton(e)) {
             model.setStartNode(node);

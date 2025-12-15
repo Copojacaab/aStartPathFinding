@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.util.Hashtable;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -38,11 +39,11 @@ public class ControlPanel extends JPanel implements ChangeListener{
     private JLabel heuristicLabel;
     private JLabel heuristicValueLabel;
 
-    // NUOVO: Etichette Risultati
+    // Etichette Risultati
     private JLabel pathCostLabel; 
-    private JLabel costValueLabel; // Usato nome più breve per il valore
+    private JLabel costValueLabel; 
     private JLabel nodesExploredLabel; 
-    private JLabel exploredValueLabel; // Usato nome più breve per il valore
+    private JLabel exploredValueLabel; 
     
     // Costanti per Font e Colori
     private static final Font BUTTON_FONT = new Font("Tahoma", Font.BOLD, 14);
@@ -61,15 +62,15 @@ public class ControlPanel extends JPanel implements ChangeListener{
         wrapperControl.setLayout(new BoxLayout(wrapperControl, BoxLayout.Y_AXIS));
 
         // --- Inizializzazione Bottoni ---
-        this.resetBtn = new ProportionalButton("Reset: 🔄");
+        this.resetBtn = new ProportionalButton("Reset");
         this.resetBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
         this.resetBtn.setFont(BUTTON_FONT);
         
-        this.clearPathBtn = new ProportionalButton("Reset Path ❌");
+        this.clearPathBtn = new ProportionalButton("Reset Path");
         this.clearPathBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
         this.clearPathBtn.setFont(BUTTON_FONT);
         
-        this.solveBtn = new ProportionalButton("Solve: ▶️");
+        this.solveBtn = new ProportionalButton("Solve");
         this.solveBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
         this.solveBtn.setFont(BUTTON_FONT);
 
@@ -102,7 +103,7 @@ public class ControlPanel extends JPanel implements ChangeListener{
 
         this.heuristicValueLabel = new JLabel("5.0"); 
         this.heuristicValueLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        this.heuristicValueLabel.setFont(SLIDER_LABEL_FONT);
+        this.heuristicValueLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
         this.heuristicValueLabel.setForeground(Color.yellow);
 
         // --- Inizializzazione Slider ---
@@ -149,12 +150,11 @@ public class ControlPanel extends JPanel implements ChangeListener{
         wrapperControl.setBackground(new Color(51, 55, 64));
         this.setMinimumSize(new Dimension(200,0));
         
-        // Assicura che i risultati siano resettati all'avvio
         resetResults();
     }
 
     // --------------------------------------------------------------------------
-    // --- Logica dei Risultati (NUOVO) ---
+    // --- Logica dei Risultati ---
     // --------------------------------------------------------------------------
 
     /** Aggiorna il pannello informativo con i risultati finali. */
@@ -178,7 +178,7 @@ public class ControlPanel extends JPanel implements ChangeListener{
     }
 
     // --------------------------------------------------------------------------
-    // --- Layout & Listeners ---
+    // --- Layout e Listeners ---
     // --------------------------------------------------------------------------
 
     /** Aggiorna l'etichetta dinamica dello slider. */
@@ -199,7 +199,7 @@ public class ControlPanel extends JPanel implements ChangeListener{
     private void addButtons(JPanel wrapperControl){
         int spacing = 10;
 
-        // Sezione 1: Azioni principali
+        // 1: Azioni principali
         wrapperControl.add(resetBtn);
         wrapperControl.add(Box.createVerticalStrut(spacing));
         wrapperControl.add(clearPathBtn);
@@ -208,16 +208,16 @@ public class ControlPanel extends JPanel implements ChangeListener{
 
         wrapperControl.add(Box.createVerticalStrut(spacing)); 
 
-        // Sezione 1.5: Pannello Risultati (NUOVO)
+        // 1.5: Pannello Risultati 
 
         wrapperControl.add(Box.createVerticalStrut(spacing * 2)); 
 
-        // Sezione 2: Generazione Labirinto
+        // 2: Generazione Labirinto
         wrapperControl.add(randMazeBtn);
 
         wrapperControl.add(Box.createVerticalStrut(spacing * 2)); 
         
-        // Sezione 3: Configurazione Euristica
+        // 3: Configurazione Euristica
         JPanel heuristicLabelWrapper = new JPanel();
         heuristicLabelWrapper.setLayout(new BoxLayout(heuristicLabelWrapper, BoxLayout.X_AXIS));
         heuristicLabelWrapper.setBackground(new Color(51, 55, 64));
@@ -237,13 +237,17 @@ public class ControlPanel extends JPanel implements ChangeListener{
         wrapperControl.add(resultsPanel);
     }
 
-    /** Helper per costruire il pannello dei risultati. */
+    /** Helper per costruire il pannello dei risultati */
     private JPanel createResultsPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(new Color(51, 55, 64)); 
+        panel.setBackground(new Color(65, 70, 80)); 
         panel.setAlignmentX(Component.LEFT_ALIGNMENT);
         
+        panel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(90, 95, 105),1),
+            new EmptyBorder(getInsets())
+        ));
         // Costo Totale
         JPanel costWrapper = new JPanel();
         costWrapper.setLayout(new BoxLayout(costWrapper, BoxLayout.X_AXIS));
@@ -269,7 +273,7 @@ public class ControlPanel extends JPanel implements ChangeListener{
         return panel;
     }
 
-    // --- Getters per il controller ---
+    // --- Getter per il controller ---
     public JButton getResetBtn() { return this.resetBtn; }
     public JButton getClearPathBtn() { return this.clearPathBtn; }
     public JButton getSolveBtn() { return this.solveBtn; }

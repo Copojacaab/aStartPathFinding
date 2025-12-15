@@ -17,16 +17,16 @@ public class CustumButton {
     private static final Font COMMON_FONT = new Font("Tahoma", Font.BOLD, 16);
 
     // colori di base
-    private static final Color INACTIVE_COLOR = new Color(80, 88, 104);
-    private static final Color HOVER_COLOR = new Color(96, 106, 124);
-    private static final Color PRESSED_COLOR = new Color(64, 72, 88);
+    private static final Color INACTIVE_COLOR = new Color(74, 84, 99); 
+    private static final Color HOVER_COLOR = new Color(90, 103, 123); 
+    private static final Color PRESSED_COLOR = new Color(62, 70, 83);  
     private static final Color ACTIVE_COLOR = Color.yellow;
     private static final Color TEXT_INACTIVE_COLOR = new Color(230, 230, 230);
-    private static final Color TEXT_ACTIVE_COLOR = Color.BLACK;
+    private static final Color TEXT_ACTIVE_COLOR = new Color(26, 26, 26); 
 
     public static class ProportionalButton extends JButton implements MouseListener {
 
-        private double ratio = 40.0 / 180.0; // Rapporto Altezza/Larghezza (compatto)
+        private double ratio = 40.0 / 180.0; 
         private int minWidth = 180;
         private int maxWidth = 500;
 
@@ -41,8 +41,7 @@ public class CustumButton {
         }
 
         /**
-         * Calcola la dimensione proporzionale in base alla larghezza del genitore (più
-         * robusto).
+         * calcola la dim proporzionale in base alla larghezza del genitore
          */
         private Dimension getProportionalSize() {
             int width = getParent() != null ? getParent().getWidth() : minWidth;
@@ -114,7 +113,7 @@ public class CustumButton {
             setBorderPainted(false);
 
             this.addMouseListener(this);
-            
+
             this.addItemListener(e -> {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                     setBackground(ACTIVE_COLOR);
@@ -128,9 +127,11 @@ public class CustumButton {
 
         private Dimension getProportionalSize() {
             int width = getParent() != null ? getParent().getWidth() : minWidth;
-            
-            if(width < minWidth) width = minWidth;
-            if(width > maxWidth) width = maxWidth;
+
+            if (width < minWidth)
+                width = minWidth;
+            if (width > maxWidth)
+                width = maxWidth;
 
             int height = (int) (width * ratio);
 

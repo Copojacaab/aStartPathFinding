@@ -65,11 +65,11 @@ public class GridPanel extends JPanel{
             case END:
                 return Color.red;
             case OPEN:
-                return new Color(128, 200, 224);
+                return new Color(112, 196, 228);
             case CLOSED:
                 return new Color(128, 224, 128);
             case PATH:
-                return new Color(255, 165, 0);
+                return new Color(255, 192, 76);
             default:
                 return Color.gray;
         }
